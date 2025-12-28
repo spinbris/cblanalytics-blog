@@ -1,0 +1,16 @@
+---
+title: "CBL Analytics Blog"
+listing:
+  id: blog-listing
+  contents: posts
+  sort: "date desc"
+  type: default
+  categories: true
+  fields: [date, title, author, reading-time, description, categories]
+page-layout: full
+---
+
+Data science, AI development, and financial analytics insights from [SJP Consulting](https://sjpconsulting.com).
+
+::: {#blog-listing}
+:::

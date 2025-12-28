@@ -1,0 +1,19 @@
+---
+title: "About This Blog"
+---
+
+## CBL Analytics Blog
+
+This blog covers topics in data science, AI-powered application development, and financial analytics.
+
+**CBL Analytics** is an AI-powered SEC EDGAR research platform that extracts, organizes, and summarizes corporate filings so you can actually read them.
+
+- **Main site:** [cblanalytics.com](https://cblanalytics.com)
+- **App:** [app.cblanalytics.com](https://app.cblanalytics.com)
+
+## About the Author
+
+**Steve Parton** is the founder of [SJP Consulting](https://sjpconsulting.com), an Australian-based consultancy specializing in corporate finance and risk analytics.
+
+- [LinkedIn](https://www.linkedin.com/in/stephen-parton-2737594/)
+- [Email](mailto:stephen.parton@sjpconsulting.com)

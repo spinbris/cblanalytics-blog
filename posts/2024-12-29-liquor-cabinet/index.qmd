@@ -1,0 +1,212 @@
+---
+title: "Building an AI-Powered Liquor Cabinet App for Under $0.10/Month"
+description: "How I used Claude Vision, voice control, and smart display integration to solve the eternal question: what cocktails can I make with what I have?"
+author: "Steve Parton"
+date: "2024-12-29"
+categories: [AI, Claude, Next.js, Voice UI, Side Projects]
+image: images/hero.png
+draft: true
+---
+
+## The Problem
+
+Every home bartender knows the feeling. You're standing in front of your liquor cabinet, guests are waiting, and you're trying to remember: *Do I have everything for a Negroni? What about that bottle of Aperol - is there enough left for a Spritz?*
+
+I wanted an app that could:
+
+1. **Know what I have** - without manual data entry
+2. **Suggest what I can make** - based on actual inventory
+3. **Work hands-free** - because my hands are often busy in the kitchen
+4. **Run on my Google Nest Hub** - the screen that's already in my kitchen
+
+And I wanted to build it cheaply enough to share with friends.
+
+## What I Built
+
+The result is **Liquor Cabinet** - an AI-powered inventory and cocktail suggestion app with seven core features:
+
+| Feature | What It Does |
+|---------|--------------|
+| **AI Bottle ID** | Photograph a bottle → Claude Vision identifies it |
+| **Inventory Management** | Track bottles by category with quantity controls |
+| **Recipe Suggestions** | AI recommends cocktails based on what you have |
+| **Recipe Search** | Look up any cocktail by name |
+| **Voice Search** | 🎤 Hands-free search in the kitchen |
+| **Kitchen Mode** | Large-format display optimised for Nest Hub |
+| **Multi-user** | Friends get their own private cabinets |
+
+![Inventory view showing bottles organised by category](images/inventory.png)
+
+## The Tech Stack
+
+I chose tools that would be free (or nearly free) at small scale:
+
+| Component | Choice | Why |
+|-----------|--------|-----|
+| **Frontend** | Next.js 15 + TypeScript + Tailwind v4 | Modern React, great developer experience |
+| **Database** | Supabase (PostgreSQL) | Generous free tier, built-in auth |
+| **AI** | Claude Haiku 4.5 | Vision capable, extremely cost-effective |
+| **Hosting** | Vercel | Free for hobby projects |
+| **Voice** | Web Speech API | Native browser support, no extra cost |
+| **Auth** | Google OAuth via Supabase | One-click sign-in |
+
+## The Interesting Bits
+
+### Claude Vision for Bottle Identification
+
+The core magic is Claude's vision capability. When you photograph a bottle, the app sends the image to Claude Haiku with a prompt asking it to identify:
+
+- Brand name
+- Spirit type (whisky, gin, vodka, etc.)
+- Volume (if visible)
+
+```typescript
+// Simplified version of the bottle identification call
+const response = await anthropic.messages.create({
+  model: "claude-haiku-4-5-20251001",
+  max_tokens: 1024,
+  messages: [{
+    role: "user",
+    content: [
+      {
+        type: "image",
+        source: { type: "base64", media_type: "image/jpeg", data: imageBase64 }
+      },
+      {
+        type: "text", 
+        text: "Identify this bottle. Return JSON with: brand, spirit_type, volume_ml"
+      }
+    ]
+  }]
+});
+```
+
+**Key learning:** Claude Haiku occasionally wraps responses in markdown code blocks even when you ask for plain JSON. I added a simple cleanup function to strip these:
+
+```typescript
+function cleanJsonResponse(text: string): string {
+  return text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
+}
+```
+
+### Cost Optimisation: Sonnet → Haiku
+
+I originally built with Claude Sonnet for development (better at following complex instructions). Once everything worked, I switched to Haiku for production.
+
+**The result: 90% cost reduction** with no noticeable quality loss for this use case.
+
+| Model | Cost per bottle ID | Monthly (5 users, ~50 IDs) |
+|-------|-------------------|---------------------------|
+| Sonnet | ~$0.01 | ~$0.50 |
+| Haiku | ~$0.001 | ~$0.05 |
+
+For simple, structured tasks like "identify this bottle", Haiku is more than capable.
+
+### Voice Input with Web Speech API
+
+The Web Speech API is surprisingly capable - and completely free. The key considerations:
+
+1. **Australian English** - I set `recognition.lang = 'en-AU'` for better accuracy with local accents
+2. **Continuous mode** - Keep listening until the user stops talking
+3. **Error handling** - Browsers handle microphone permissions differently
+
+```typescript
+const recognition = new webkitSpeechRecognition();
+recognition.continuous = false;
+recognition.interimResults = false;
+recognition.lang = 'en-AU';
+
+recognition.onresult = (event) => {
+  const transcript = event.results[0][0].transcript;
+  searchCocktails(transcript);
+};
+```
+
+**Gotcha:** The Web Speech API requires HTTPS in production. Vercel handles this automatically.
+
+### Kitchen Mode for Smart Displays
+
+The Nest Hub Max has a 10" screen and runs a Chrome-based browser. I created a dedicated "Kitchen Mode" with:
+
+- **Large touch targets** - Easy to tap with wet hands
+- **High contrast** - Readable from across the kitchen
+- **Simplified navigation** - Just the essentials
+- **Auto-refresh** - Stays current without interaction
+
+The trick is detecting when to offer Kitchen Mode. I check for touch capability and smaller viewport:
+
+```typescript
+const isKitchenDisplay = 
+  'ontouchstart' in window && 
+  window.innerWidth <= 1280 &&
+  window.innerHeight <= 800;
+```
+
+### Multi-User with Row Level Security
+
+Supabase's Row Level Security (RLS) makes multi-user trivially easy. Each bottle record has a `user_id` column, and a simple policy ensures users only see their own data:
+
+```sql
+CREATE POLICY "Users can only access their own bottles"
+ON bottles FOR ALL
+USING (auth.uid() = user_id);
+```
+
+No application-level filtering needed - the database handles it.
+
+## The Numbers
+
+Here's what this actually costs to run:
+
+| Service | Monthly Cost |
+|---------|-------------|
+| Vercel hosting | Free |
+| Supabase (database + auth) | Free |
+| Claude API (~50 bottle IDs) | ~$0.05 |
+| **Total for 5 users** | **< $0.10** |
+
+That's not a typo. The entire app runs for less than ten cents per month.
+
+## Lessons Learned
+
+### 1. Start with the expensive model, then optimise
+
+Building with Sonnet first meant I could iterate quickly without worrying about prompt engineering for a weaker model. Once the logic was solid, switching to Haiku was straightforward.
+
+### 2. Handle AI response quirks defensively
+
+Even with clear instructions, LLMs sometimes format responses unexpectedly. Always sanitise and validate AI outputs before using them.
+
+### 3. Design for your actual use case
+
+Kitchen Mode wasn't in the original spec. It emerged from actually using the app while cooking - and now it's my favourite feature.
+
+### 4. Free tiers are genuinely useful
+
+Between Vercel, Supabase, and the Web Speech API, the only cost is Claude API calls. Modern infrastructure makes hobby projects almost free to run.
+
+## Try It Yourself
+
+- **Live app:** [liquor-cabinet.vercel.app](https://liquor-cabinet.vercel.app)
+- **Source code:** [github.com/spinbris/liquor-cabinet](https://github.com/spinbris/liquor-cabinet)
+
+The app uses Google Sign-In, so you'll get your own private cabinet. Add a few bottles, and see what cocktails you can make.
+
+---
+
+## Building with Claude as a Development Partner
+
+One meta-note: this entire project was built collaboratively with Claude as a development partner. I used a "Four Hats" workflow:
+
+1. **Planner** (Claude) - Proposes designs and code
+2. **Approver** (Me) - Reviews and greenlights
+3. **Builder** (Claude) - Implements exactly what was approved
+4. **Reviewer** (Both) - Verifies the build
+
+This structured approach kept development moving quickly while maintaining quality. The app went from idea to production in a few focused sessions.
+
+If you're interested in AI-assisted development workflows, that might be a topic for another post.
+
+---
+
+*Questions or feedback? Find me on [LinkedIn](https://www.linkedin.com/in/stephen-parton-2737594/) or [email](mailto:stephen.parton@sjpconsulting.com).*

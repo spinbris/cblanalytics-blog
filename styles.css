@@ -1,0 +1,103 @@
+/*-- scss:defaults --*/
+
+/* Import fonts to match main site */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap');
+
+/* CBL Analytics Colors */
+$primary: #0066cc;
+$link-color: #0066cc;
+$body-color: #334155;
+
+/*-- scss:rules --*/
+
+:root {
+  /* CBL Analytics Colors */
+  --cbl-primary: #0066cc;
+  --cbl-primary-dark: #0052a3;
+  --cbl-primary-light: #e6f0fa;
+  
+  /* Slate palette */
+  --cbl-slate-50: #f8fafc;
+  --cbl-slate-100: #f1f5f9;
+  --cbl-slate-200: #e2e8f0;
+  --cbl-slate-300: #cbd5e1;
+  --cbl-slate-600: #475569;
+  --cbl-slate-700: #334155;
+  --cbl-slate-800: #1e293b;
+  --cbl-slate-900: #0f172a;
+}
+
+/* Typography */
+body {
+  font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 600;
+  color: var(--cbl-slate-900);
+}
+
+code, pre {
+  font-family: 'JetBrains Mono', monospace;
+}
+
+/* Links */
+a:hover {
+  color: var(--cbl-primary-dark);
+}
+
+/* Navbar tweaks */
+.navbar {
+  border-bottom: 1px solid var(--cbl-slate-200);
+}
+
+.navbar-brand {
+  font-weight: 600;
+}
+
+/* Code blocks */
+pre {
+  background-color: var(--cbl-slate-50);
+  border: 1px solid var(--cbl-slate-200);
+  border-radius: 0.5rem;
+}
+
+/* Blog post cards */
+.quarto-listing-default .listing-item {
+  border: 1px solid var(--cbl-slate-200);
+  border-radius: 0.75rem;
+  padding: 1.5rem;
+  margin-bottom: 1rem;
+  transition: box-shadow 0.2s;
+}
+
+.quarto-listing-default .listing-item:hover {
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+/* Category badges */
+.quarto-category {
+  background-color: var(--cbl-primary-light);
+  color: var(--cbl-primary);
+  border-radius: 9999px;
+  padding: 0.25rem 0.75rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+}
+
+/* Footer */
+.nav-footer {
+  border-top: 1px solid var(--cbl-slate-200);
+}
+
+/* Buttons/CTAs if needed */
+.btn-primary {
+  background-color: var(--cbl-primary);
+  border-color: var(--cbl-primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--cbl-primary-dark);
+  border-color: var(--cbl-primary-dark);
+}

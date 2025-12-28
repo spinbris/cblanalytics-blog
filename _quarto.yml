@@ -1,0 +1,45 @@
+project:
+  type: website
+  output-dir: _site
+
+website:
+  title: "CBL Analytics Blog"
+  description: "Data science, AI development, and financial analytics insights"
+  site-url: https://cblanalytics.com/blog
+  
+  navbar:
+    background: "#0f172a"
+    foreground: "#f8fafc"
+    left:
+      - text: "Blog"
+        href: index.qmd
+      - text: "About"
+        href: about.qmd
+    right:
+      - text: "CBL Analytics"
+        href: https://cblanalytics.com
+      - text: "App"
+        href: https://app.cblanalytics.com
+  
+  page-footer:
+    center: |
+      © 2025 [SJP Consulting](https://sjpconsulting.com). All rights reserved.
+    background: "#0f172a"
+
+format:
+  html:
+    theme: 
+      light: [cosmo, styles.css]
+    css: styles.css
+    toc: true
+    code-fold: true
+    code-tools: true
+    highlight-style: github
+
+execute:
+  freeze: auto
+
+author:
+  name: "Steve Parton"
+  url: https://sjpconsulting.com
+  affiliation: "SJP Consulting"
