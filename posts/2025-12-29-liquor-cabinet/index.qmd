@@ -1,41 +1,61 @@
 ---
-title: "Building an AI-Powered Liquor Cabinet App for Under $0.10/Month"
-description: "How I used Claude Vision, voice control, and smart display integration to solve the eternal question: what cocktails can I make with what I have?"
+title: "The Great Daiquiri Disaster of Christmas '25 "
+description: "What? No white rum in the cellar! Lets build a liquor cabinet app to make sure that does not happen again"
 author: "Steve Parton"
 date: "2025-12-29"
 categories: [AI, Claude, Next.js, Voice UI, Side Projects]
 image: images/hero.png
-draft: true
+draft: false
 ---
+
+## Background
+
+I did a couple of Ed Donner's great Udemy courses earlier in the year (). To hone my skills after their completion, I have been working towards finishing a 'little' side project using agentic ai 
+to return corporate financial information from SEC reports (10-K, 10-Q and 20-F mainly) together with various web searches to produce synthesised fully cited reports which might 
+form the basis of a more complete financial analysis of a particular company. Key components are financial statements, risk report, financial metrics, financial analysis (including sement analyses) and a 
+comprehensive report which pulls all the specialised reports together with appropriate interactive graphs.  
+
+Data is stored in Sqlite and ChromaDB Knowledge Base with additional web search availability to answer more general questions about comparative performance etc.
+It does not replace proper financial corporate analysis though as it synthesises and aggregates data into a user-friendly format. It is not intended 
+
+It was meant to be finished by Christmas, and is oh so close.. and there is a link to the dev version on the cblanalytics website, but there are still a few uissues to iron out..
+
+In the meantime we had the big daiquiri disaster on Christmas day, which had to be sorted, so we pivoted our efforts, just over Christmas:
 
 ## The Problem
 
-Every home bartender knows the feeling. You're standing in front of your liquor cabinet, guests are waiting, and you're trying to remember: *Do I have everything for a Negroni? What about that bottle of Aperol - is there enough left for a Spritz?*
+We have the frozen strawberries, it's a hot Australian Christmas Day, so clearly we need to provide frozen daiquiris all around. Plenty of limes, grab the Bacardi and we are sorted!  
+But alas, no white rum of any sort in the liquor cabinet. That is not possible, there is always white rum in the liquor cabinet. So we hunt through the cabinet again and still no luck, so we have to replace with some strange coconut concoction.
 
-I wanted an app that could:
+The lady of the house suggests I put together a spreadsheet so this disastrous situation never arises again. Clearly a great idea in concept, but a spreadsheet? 
+Please... that is so last year..
 
+No, Claude and I will build an Agentic AI app!!
+
+It will:
 1. **Know what I have** - without manual data entry
 2. **Suggest what I can make** - based on actual inventory
-3. **Work hands-free** - because my hands are often busy in the kitchen
-4. **Run on my Google Nest Hub** - the screen that's already in my kitchen
+3. **Provide what is needed for a specific cocktail** showing what I still need to buy
+3. **Work hands-free** - because my hands are often busy in the kitchen, or holding another drink (mostly the latter)
+4. **Run on my tablet** - a screen easily used in the kitchen/bar
 
-And I wanted to build it cheaply enough to share with friends.
+And I wanted to build it cheaply enough to share with friends (ie no cost).
 
-## What I Built
+## What we built (well Claude with my close supervision :) :
 
-The result is **Liquor Cabinet** - an AI-powered inventory and cocktail suggestion app with seven core features:
+**Liquor Cabinet** - an AI-powered inventory and cocktail suggestion app with seven core features:
 
 | Feature | What It Does |
 |---------|--------------|
 | **AI Bottle ID** | Photograph a bottle → Claude Vision identifies it |
 | **Inventory Management** | Track bottles by category with quantity controls |
-| **Recipe Suggestions** | AI recommends cocktails based on what you have |
+| **Recipe Suggestions** | AI recommends cocktails based on what you have. |
 | **Recipe Search** | Look up any cocktail by name |
 | **Voice Search** | 🎤 Hands-free search in the kitchen |
-| **Kitchen Mode** | Large-format display optimised for Nest Hub |
+| **Kitchen Mode** | Large-format display optimised for kitchen tablets |
 | **Multi-user** | Friends get their own private cabinets |
 
-![Inventory view showing bottles organised by category](images/inventory.png)
+![Recipe view showing some suggested recipes](images/recipes.png)
 
 ## The Tech Stack
 
@@ -59,6 +79,7 @@ The core magic is Claude's vision capability. When you photograph a bottle, the 
 - Brand name
 - Spirit type (whisky, gin, vodka, etc.)
 - Volume (if visible)
+- Notes
 
 ```typescript
 // Simplified version of the bottle identification call
@@ -81,7 +102,9 @@ const response = await anthropic.messages.create({
 });
 ```
 
-**Key learning:** Claude Haiku occasionally wraps responses in markdown code blocks even when you ask for plain JSON. I added a simple cleanup function to strip these:
+***The recipes - its AI, so if you don't like the original suggestions, refresh and you will likely get some different ideas.
+
+**Key learning:** Claude Haiku occasionally wraps responses in markdown code blocks even when you ask for plain JSON. Claude added a simple cleanup function to strip these:
 
 ```typescript
 function cleanJsonResponse(text: string): string {
@@ -91,7 +114,7 @@ function cleanJsonResponse(text: string): string {
 
 ### Cost Optimisation: Sonnet → Haiku
 
-I originally built with Claude Sonnet for development (better at following complex instructions). Once everything worked, I switched to Haiku for production.
+It was originally built with Claude Sonnet for development (better at following complex instructions). Once everything worked, we switched to Haiku for production.
 
 **The result: 90% cost reduction** with no noticeable quality loss for this use case.
 
@@ -106,7 +129,7 @@ For simple, structured tasks like "identify this bottle", Haiku is more than cap
 
 The Web Speech API is surprisingly capable - and completely free. The key considerations:
 
-1. **Australian English** - I set `recognition.lang = 'en-AU'` for better accuracy with local accents
+1. **Australian English** - I set `recognition.lang = 'en-AU'` for better accuracy with local accents, so if you are not Australian, you may want to practice your accent (or change the config setting)
 2. **Continuous mode** - Keep listening until the user stops talking
 3. **Error handling** - Browsers handle microphone permissions differently
 
@@ -126,14 +149,15 @@ recognition.onresult = (event) => {
 
 ### Kitchen Mode for Smart Displays
 
-The Nest Hub Max has a 10" screen and runs a Chrome-based browser. I created a dedicated "Kitchen Mode" with:
+The Nest Hub Max has a 10" screen and runs a Chrome-based browser. We created a dedicated "Kitchen Mode" with:
 
 - **Large touch targets** - Easy to tap with wet hands
 - **High contrast** - Readable from across the kitchen
 - **Simplified navigation** - Just the essentials
 - **Auto-refresh** - Stays current without interaction
 
-The trick is detecting when to offer Kitchen Mode. I check for touch capability and smaller viewport:
+...and then found that Google Home does not support Home actions which just open a website app, so might have to use your tablet instead.
+The tech trick is detecting when to offer Kitchen Mode. We check for touch capability and smaller viewport:
 
 ```typescript
 const isKitchenDisplay = 
@@ -144,7 +168,7 @@ const isKitchenDisplay =
 
 ### Multi-User with Row Level Security
 
-Supabase's Row Level Security (RLS) makes multi-user trivially easy. Each bottle record has a `user_id` column, and a simple policy ensures users only see their own data:
+Supabase's Row Level Security (RLS) makes multi-user trivially easy. Just sign in with your Google account. Each bottle record has a `user_id` column, and a simple policy ensures users only see their own data:
 
 ```sql
 CREATE POLICY "Users can only access their own bottles"
@@ -165,7 +189,7 @@ Here's what this actually costs to run:
 | Claude API (~50 bottle IDs) | ~$0.05 |
 | **Total for 5 users** | **< $0.10** |
 
-That's not a typo. The entire app runs for less than ten cents per month.
+That's not a typo. The entire app runs for less than ten cents per month, on my account, until the limits are breached.
 
 ## Lessons Learned
 
@@ -179,7 +203,7 @@ Even with clear instructions, LLMs sometimes format responses unexpectedly. Alwa
 
 ### 3. Design for your actual use case
 
-Kitchen Mode wasn't in the original spec. It emerged from actually using the app while cooking - and now it's my favourite feature.
+Kitchen Mode wasn't in the original spec. but quickly became clear we needed it  - and now it's a favourite feature.
 
 ### 4. Free tiers are genuinely useful
 
@@ -187,14 +211,14 @@ Between Vercel, Supabase, and the Web Speech API, the only cost is Claude API ca
 
 ## Try It Yourself
 
-- **Live app:** [liquor-cabinet.vercel.app](https://liquor-cabinet.vercel.app)
+- **Live app:** [liquor-cabinet-one.vercel.app](https://liquor-cabinet-one.vercel.app)
 - **Source code:** [github.com/spinbris/liquor-cabinet](https://github.com/spinbris/liquor-cabinet)
 
-The app uses Google Sign-In, so you'll get your own private cabinet. Add a few bottles, and see what cocktails you can make.
+As mentioned the app uses Google Sign-In, so you'll get your own private cabinet. Add a few bottles from within the app on your phone, and see what cocktails you can make, or how much shopping you need to do.
 
 ---
 
-## Building with Claude as a Development Partner
+## Building with Claude as a Development Partner (Desktop, VS Code extension and CLI)
 
 One meta-note: this entire project was built collaboratively with Claude as a development partner. I used a "Four Hats" workflow:
 
@@ -203,7 +227,11 @@ One meta-note: this entire project was built collaboratively with Claude as a de
 3. **Builder** (Claude) - Implements exactly what was approved
 4. **Reviewer** (Both) - Verifies the build
 
-This structured approach kept development moving quickly while maintaining quality. The app went from idea to production in a few focused sessions.
+This structured approach kept development moving quickly while maintaining quality. Claude can tend to run off and create havoc if not using a fairly tight workflow.
+On top of all that, I found it is still worthwhile to get Claude to review the whole codebase. 
+Also the Claude 'prompt improver' in the Claude Console helps, but need to do that a bit more in this project.
+
+The app went from idea to production in a only few focused sessions.
 
 If you're interested in AI-assisted development workflows, that might be a topic for another post.
 
