@@ -5,7 +5,7 @@ project:
 website:
   title: "CBL Analytics Blog"
   description: "Data science, AI development, and financial analytics insights"
-  site-url: https://cblanalytics.com/blog
+  site-url: https://blog.cblanalytics.com
   
   navbar:
     background: "#0f172a"

@@ -2,7 +2,7 @@
 title: "Building an AI-Powered Liquor Cabinet App for Under $0.10/Month"
 description: "How I used Claude Vision, voice control, and smart display integration to solve the eternal question: what cocktails can I make with what I have?"
 author: "Steve Parton"
-date: "2024-12-29"
+date: "2025-12-29"
 categories: [AI, Claude, Next.js, Voice UI, Side Projects]
 image: images/hero.png
 draft: true
