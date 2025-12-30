@@ -12,15 +12,15 @@ draft: false
 
 I did a couple of Ed Donner's great Udemy courses earlier in the year:
 
--  [AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents](https://www.udemy.com/course/llm-engineering-master-ai-and-large-language-models/)
+-   [AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents](https://www.udemy.com/course/llm-engineering-master-ai-and-large-language-models/)
 
--  [AI Engineer Agentic Track: The Complete Agent & MCP Course](https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/)
+-   [AI Engineer Agentic Track: The Complete Agent & MCP Course](https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/)
 
- To hone my skills after finishing the courses and having just finished a long term government contract, I have been working towards completing a 'little' educational side project using agenticAI (OpenAI Agents SDK) to return corporate financial information from SEC reports (10-K, 10-Q and 20-F mainly) together with various web searches and supporting visualisations to produce synthesised, fully cited reports which might form the basis of a more complete financial analysis of a particular company. Key components are financial statements, risk report, financial metrics, financial analysis (including segment analyses) and a comprehensive report which pulls all the specialised reports together with appropriate interactive graphs.
+To hone my skills after finishing the courses and having just finished a long term government contract, I have been working towards completing a 'little' educational side project using agenticAI (OpenAI Agents SDK) to return corporate financial information from SEC reports (10-K, 10-Q and 20-F mainly) together with various web searches and supporting visualisations to produce synthesised, fully cited reports which might form the basis of a more complete financial analysis of a particular company. Key components are financial statements, risk report, financial metrics, financial analysis (including segment analyses) and a comprehensive report which pulls all the specialised reports together with appropriate interactive graphs.
 
 Data is stored in Sqlite and ChromaDB Knowledge Base with additional web search availability to answer more general questions about comparative performance etc.
 
-This analysis does not replace full corporate financial analysis, as it just synthesises and aggregates data into a user-friendly format. It is intended to be an assistant to a human analyst, not a replacement. I have seen youtube videos where OpenAI seems to be working with some UK clients to achieve a more complete solution, but that certainly is not the goal here. You would have to overlay this basic analysis with the philosophy and strategy, risk preference etc etc of the investor to take it any further. 
+This analysis does not replace full corporate financial analysis, as it just synthesises and aggregates data into a user-friendly format. It is intended to be an assistant to a human analyst, not a replacement. I have seen youtube videos where OpenAI seems to be working with some UK clients to achieve a more complete solution, but that certainly is not the goal here. You would have to overlay this basic analysis with the philosophy and strategy, risk preference etc etc of the investor to take it any further.
 
 So back to the great Christmas Daiquiri Disaster of '25, which is the subject of this post:
 
@@ -30,7 +30,7 @@ We have the frozen strawberries and it's a hot Australian Christmas Day, so clea
 
 The lady of the house suggested that, as a matter of some priority, I put together a spreadsheet so this disastrous situation never arises again. Clearly a great idea in concept, but a spreadsheet? Please... that is so last year..
 
-### No, Claude and I will build an Agentic AI app!!
+### No, Claude and I will build an AI-powered liquor cabinet app!!
 
 It will:
 
@@ -45,6 +45,8 @@ It will:
 5\. **Run on my tablet** - a screen easily used in the kitchen/bar
 
 And I wanted to build it cheaply enough to share with friends (ie no cost).
+
+And then we will write it all up in Quarto on Posit's new-ish Positron IDE as a blog post, because it handles both R and Python and the blog will tend in future (not here) to have more of a data science theme.
 
 ## What we built (well Claude with my close supervision 😄 ) :
 
@@ -64,8 +66,9 @@ And I wanted to build it cheaply enough to share with friends (ie no cost).
 
 ![We found the white rum!](images/white_rum.png)
 
-### so yes we can make frozen daiquiris! 
- New Year's Eve here we come...
+### so yes we can make frozen daiquiris!
+
+New Year's Eve here we come...
 
 ![So here come the daiquiris..](images/Daiquiri.png)
 
@@ -78,7 +81,7 @@ And I wanted to build it cheaply enough to share with friends (ie no cost).
 I chose tools that would be free (or nearly free) at small scale:
 
 | Component | Choice | Why |
-|-------------------------------|-----------------------|-------------------|
+|------------------------------|-----------------------|-------------------|
 | **Frontend** | Next.js 15 + TypeScript + Tailwind v4 | Modern React, great developer experience |
 | **Database** | Supabase (PostgreSQL) | Generous free tier, built-in auth |
 | **AI** | Claude Haiku 4.5 | Vision capable, extremely cost-effective |
@@ -97,36 +100,9 @@ The core magic is Claude's vision capability. When you photograph a bottle, the 
 -   Volume (if visible)
 -   Notes
 
-``` typescript
-// Simplified version of the bottle identification call
-const response = await anthropic.messages.create({
-  model: "claude-haiku-4-5-20251001",
-  max_tokens: 1024,
-  messages: [{
-    role: "user",
-    content: [
-      {
-        type: "image",
-        source: { type: "base64", media_type: "image/jpeg", data: imageBase64 }
-      },
-      {
-        type: "text", 
-        text: "Identify this bottle. Return JSON with: brand, spirit_type, volume_ml"
-      }
-    ]
-  }]
-});
-```
+**The recipes** - its AI, so if you don't like the original suggestions, refresh and you will likely get some different ideas.
 
-***The recipes*** - its AI, so if you don't like the original suggestions, refresh and you will likely get some different ideas.
-
-**Key learning:** Claude Haiku occasionally wraps responses in markdown code blocks even when you ask for plain JSON. Claude added a simple cleanup function to strip these:
-
-``` typescript
-function cleanJsonResponse(text: string): string {
-  return text.replace(/```json\n?/g, '').replace(/```\n?/g, '').trim();
-}
-```
+**Key learning:** Claude Haiku occasionally wraps responses in markdown code blocks even when you ask for plain JSON. Claude added a simple cleanup function to strip these.
 
 ### Cost Optimisation: Sonnet → Haiku
 
@@ -149,18 +125,6 @@ The Web Speech API is surprisingly capable - and completely free. The key consid
 2.  **Continuous mode** - Keep listening until the user stops talking
 3.  **Error handling** - Browsers handle microphone permissions differently
 
-``` typescript
-const recognition = new webkitSpeechRecognition();
-recognition.continuous = false;
-recognition.interimResults = false;
-recognition.lang = 'en-AU';
-
-recognition.onresult = (event) => {
-  const transcript = event.results[0][0].transcript;
-  searchCocktails(transcript);
-};
-```
-
 **Gotcha:** The Web Speech API requires HTTPS in production. Vercel handles this automatically.
 
 ### Kitchen Mode for Smart Displays
@@ -172,24 +136,11 @@ The Nest Hub Max has a 10" screen and runs a Chrome-based browser. We created a 
 -   **Simplified navigation** - Just the essentials
 -   **Auto-refresh** - Stays current without interaction
 
-...and then found that Google Home does not support Home actions which just open a website app, so might have to use your tablet instead. The tech trick is detecting when to offer Kitchen Mode. We check for touch capability and smaller viewport:
-
-``` typescript
-const isKitchenDisplay = 
-  'ontouchstart' in window && 
-  window.innerWidth <= 1280 &&
-  window.innerHeight <= 800;
-```
+...and then found that Google Home does not support Home actions which just open a website app, so might have to use your tablet instead. There is a toggle to switch on kitchen mode.
 
 ### Multi-User with Row Level Security
 
-Supabase's Row Level Security (RLS) makes multi-user trivially easy. Just sign in with your Google account. Each bottle record has a `user_id` column, and a simple policy ensures users only see their own data:
-
-``` sql
-CREATE POLICY "Users can only access their own bottles"
-ON bottles FOR ALL
-USING (auth.uid() = user_id);
-```
+Supabase's Row Level Security (RLS) makes multi-user trivially easy. Just sign in with your Google account. Each bottle record has a `user_id` column, and a simple policy ensures users only see their own data.
 
 No application-level filtering needed - the database handles it.
 
@@ -222,32 +173,37 @@ Kitchen Mode wasn't in the original spec. but quickly became clear we needed it 
 
 ### 4. Free tiers are genuinely useful
 
-Between Vercel, Supabase, and the Web Speech API, the only cost is Claude API calls. Modern infrastructure makes hobby projects almost free to run.
+Between Vercel, Supabase, and the Web Speech API, the only cost is Claude API calls. Modern infrastructure makes hobby projects almost free to run. But remember it is a hobby project, so just working with free tier limits!
 
 ## Try It Yourself
 
--   **Live app:** [liquor-cabinet-one.vercel.app](https://liquor-cabinet-one.vercel.app)
+-   **Live app:** [cblanalytics.com/liquor-cabinet](https://www.cblanalytics.com/liquor-cabinet)
 -   **Source code:** [github.com/spinbris/liquor-cabinet](https://github.com/spinbris/liquor-cabinet)
 
-As mentioned the app uses Google Sign-In, so you'll get your own private cabinet. Add a few bottles from within the app on your phone, and see what cocktails you can make, or how much shopping you need to do.
+As mentioned the app uses Google Sign-In, so you'll get your own private cabinet. The idea is that you log into the app on your smart phone, then add bottles in the app which uses your phone's camera. The app then searches for description and details using Claude Vision, then adds to the inventory.
+
+You can then review your inventory, recipes and possibilities on your phone, tablet or wherever! 😃. Add a few bottles from within the app on your phone, and see what other cocktails you could make, or how much shopping you need to do.
+
+Originally, I thought I might be able to do a bit of supply chain optimisation, hooking into the bottle shop api, but no luck there yet.
 
 ------------------------------------------------------------------------
 
 ## Building with Claude as a Development Partner
- (Desktop, VS Code extension and CLI)
 
-One meta-note: this entire project was built collaboratively with Claude as a development partner. I used a "Four Hats" workflow (made up by me and I have zero formal tech training), to ensure approvals required at each stage:
+(Desktop, VS Code extension and CLI)
+
+One meta-note: this entire project was built collaboratively with Claude as a development partner. I used a "Four Hats" workflow (made up by me and I have zero formal tech training, so not intended as a recommendation), to ensure approvals required at each stage:
 
 1.  **Planner** (Claude) - Proposes designs and code
 2.  **Approver** (Me) - Reviews and greenlights
 3.  **Builder** (Claude) - Implements exactly what was approved
 4.  **Reviewer** (Both) - Verifies the build
 
-This structured approach kept development moving quickly while maintaining quality. Claude can tend to run off the rails and create havoc if not using a fairly tight workflow. I have heard some of the Google DeepMind gurus saying that it may well be OK to give the llm a computer and let them go, but that probably just explains why I am not a Google DeepMind guru. We also found it useful to get one of the Claudes to review the whole codebase from time to time. The prompt improver in Claude Console was also useful. 
+This structured approach kept development moving quickly while maintaining quality. Claude can tend to run off the rails and create havoc/regressions if not using a fairly tight workflow. I have heard some of the Google DeepMind gurus saying that it may well be OK to give the llm a computer and let them go for it, but that probably just explains why I am not a Google DeepMind guru. We also found it useful to get one of the Claudes to review the whole codebase from time to time. The prompt improver in Claude Console was also useful.
 
 The app went from idea to production in a only few focused sessions. As the cricket was not really worth watching on Boxing Day, this was actually a fun alternative.
 
-For next post I will go back to the financial analysis agenticAI project, which is more complex and challenging, and yet not nearly as rewarding - no daiquiris at all...
+For next post I will go back to the financial analysis agenticAI project, which is more complex and challenging, and yet not nearly as rewarding in terms of daiquiri rewards...
 
 ------------------------------------------------------------------------
 
