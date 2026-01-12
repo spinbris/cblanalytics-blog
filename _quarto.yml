@@ -30,6 +30,8 @@ format:
   html:
     theme: 
       light: [cosmo, styles.css]
+    mermaid:
+      theme: default
     css: styles.css
     toc: true
     code-fold: true

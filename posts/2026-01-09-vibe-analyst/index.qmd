@@ -1,0 +1,149 @@
+---
+title: "The Rise of the Vibe Analyst"
+description: "Beyond vibe coding - where intuition meets insight in AI-assisted analysis."
+author: "Steve Parton"
+date: "2026-01-09"
+categories: [Claude, AI, Vibe Analytics, Finance, Data Analysis]
+image: images/vibe-analyst-header.png
+draft: false
+---
+
+![](images/vibe-analyst-header.png)
+
+## Where It All Started
+
+In February 2025, Andrej Karpathy dropped this tweet:
+
+> "There's a new kind of coding I call 'vibe coding', where you fully give in to the vibes, embrace exponentials, and forget that the code even exists. It's possible because the LLMs are getting too good... I just see stuff, say stuff, run stuff, and copy-paste stuff, and it mostly works."
+
+The term went viral, and apparently was Collins Dictionary word of the year for 2025.
+
+But here's the thing - why should this stop at coding?
+
+## Background: Corporate Research Assistant - an AI powered app to source SEC data
+
+I am not much of a coder. I'm a chartered accountant and MBA with 30+ years experience in finance, banking, and analytics. I have used code in 2 professional projects in the last 10 years (R in both cases), so at best a (R) hobby coder.
+
+But I have done quite a few Udemy/Coursera courses, learning various aspects of R, ML and deep learning (mostly R, although some of the early and excellent [superdatascience](https://www.superdatascience.com/) courses were 'bilingual').
+
+Then in 2025 I did a couple of Ed Donner's great Udemy courses on AI (in Python!):
+
+-   [AI Engineer Core Track: LLM Engineering, RAG, QLoRA, Agents](https://www.udemy.com/course/llm-engineering-master-ai-and-large-language-models/)
+
+-   [AI Engineer Agentic Track: The Complete Agent & MCP Course](https://www.udemy.com/course/the-complete-agentic-ai-engineering-course/)
+
+So late in 2025, I decided I should test my newly acquired knowledge (😄) using a real/test project within an area of my expertise and so began the test project:
+
+[SEC Corporate Research Assistant](https://www.cblanalytics.com/research)
+
+This is a knowledge base and agentic AI app to extract, synthesise and report on corporate financial information from SEC filings (10-K, 10-Q, 20-F) augmented with web searches for more recent data, with some additional graphics and analytics included. The reporting 'pack' consists of 5 specialist/subsidiary reports which are synthesised into a comprehensive report. All data sources are intended to be fully cited for transparency. All data is then stored into a ChromaDB/Sqlite knowledge base to facilitate further user querying. It is specifically NOT an app which might provide any investment guidance, just present what information already exists in a (hopefully) meaningful way.
+
+It all went pretty good for an initial 'test' project and the app/blog and github are all freely available [here](https://www.cblanalytics.com/research), at least until the OpenAI credit I loaded runs out, or you enter your own OpenAI key in the app.
+
+But that was really just the beginning of the story...
+
+## Beyond Code: The Vibe Analyst
+
+So when I started 'vibe coding' it was by necessity - AI was a lot better coder than I will ever be. I did mostly look at the code (review is a bit of a stretch) if only for educational reasons. I reviewed the functionality while Claude, wearing a different 'hat', reviewed the code.
+
+But I am pretty good at finance and analytics, and so that was where I could add value, and I quickly realised that Claude and I were a pretty good team before we even got to the coding bit, if there even was a coding bit.
+
+Then I saw an article from the MIT Sloan Management Review from July, 2025 "Vibe Analytics: Vibe Coding's New Cousin Unlocks Insights". <https://sloanreview.mit.edu/article/vibe-analytics-vibe-codings-new-cousin-unlocks-insights/>
+
+So the term vibe analytics has existed at least since July 2025.
+
+The MIT approach seems to focus on leaders engaging directly with existing data sets through conversation - getting insights faster by eliminating the translation process between business questions and technical analysis. Think executives dropping CSV files into ChatGPT and asking questions.
+
+That is not exactly how I envisage it for my purposes, after all someone still has to do the detailed analysis. But the two approaches could happily co-exist. In any case I am happy to declare myself as a full **vibe analyst** - at least wherever possible.
+
+## My Approach: Building the Tools as Part of the Vibe
+
+Where MIT Sloan describes vibe analytics as *consuming* data through AI conversation, I see the real power in *creating* the analytical infrastructure itself through the same improvisational process. And here I am talking analytical infrastructure, which is often only for a one-off but replicable, analysis. It is not intended as a operational system development, although it is sometimes useful as a prototype.
+
+When I built the [SEC Corporate Research Assistant](https://www.cblanalytics.com/research), I didn't just use AI to query existing data. I used Claude/s to:
+
+-   Research the best approach to extracting XBRL financial data (well with Edgartools fantastic assistance, especially after we added the related Claude skill)
+-   Design the knowledge base architecture (based on what I thought we needed functionally, and given some of the things I had picked up from Ed's courses)
+-   Build the multi-agent orchestration system (based on the OpenAI SDK and starting example)
+-   Create the specialist agents for financial analysis, risk assessment, and synthesis (expanding the OpenAI example as required)
+-   Develop the visualisation components (still working on this)
+-   Deploy the whole thing!
+
+The tools themselves emerged from the vibe. I never touched the code directly. I planned, approved, reviewed - Claude/s did all the heavy lifting.
+
+This is fundamentally different from just "chatting with your data". It's about using the same improvisational AI dialogue to construct bespoke analytical systems that can provide a replicable analysis.
+
+As an analyst, this is what I have been doing for years, except now I have some new toolsets and methodologies to much simplify that process.
+
+## A Concrete Example: Designing the Risk Agent
+
+Let me give you a specific example of vibe analysis in action.
+
+When designing the Risk Agent, I didn't write prompts - I described what a good risk analysis should contain based on 30 years of reading annual reports:
+
+> "The risk section should capture the Item 1A risk factors from the 10-K, but also look at MD&A for management's own risk commentary, check recent 8-Ks for material events, and synthesize it all into something an analyst would actually want to read. About 800-1200 words, with proper citations."
+
+Claude took that description and iterated on the prompt until we had something that consistently produced quality output. We went through maybe 5-6 versions, with me reviewing the actual outputs against companies I knew well (banks, mostly - my domain expertise).
+
+The same pattern repeated for every agent. I brought the domain knowledge ("what should good financial analysis look like?"), Claude brought the technical implementation. Neither of us could have done it alone. But the prompts admittedly need more work - I have not used the Prompt Improver in the Anthropic Console enough yet.
+
+## The Practical Reality
+
+Recently, I've also been using Claude Opus 4.5 to research analytical project ideas:
+
+-   **Rationality check**: Am I off my tree? *I thought sentiment analysis was a great idea in a particular use case, Claude not so much - discussions are ongoing.*
+-   **Practicality assessment**: Can it be done? (It always can - just degrees of accuracy/ levels of confidence)
+-   **Literature review**: What have others already done? *This saved me from reinventing several wheels, and provided great guidance,*
+-   **Data mapping**: What data exists and how do we get it?
+-   **Methodology selection**: Best analytical approaches for the problem
+
+We haven't even reached the coding part at this stage.
+
+## What Went Wrong (Because Something Always Does)
+
+The vibe analyst approach isn't without its disasters. A few highlights from my journey:
+
+**The Great Regression of November 2025**: Claude confidently "improved" the financial metrics agent and broke the balance sheet verification. Boy, Claude can move fast when deciding to go rogue! Assets no longer equaled Liabilities plus Equity. For a chartered accountant, this is roughly equivalent to a doctor forgetting which side the heart is on. We now have mandatory **backup** procedures before any changes.
+
+**Analysis Paralysis:** When you get hit by a regression type disaster, you can tend to go conservative, and if you want Claude to knock out an implementation review or 20, he can do it in no time - but then you are meant to read them,apparently. So there is a happy medium between letting Claude loose and being overly risk-averse. The newer [Ralph Wiggum](https://ghuntley.com/ralph/) approach (bash it until it works) may be a solution!
+
+**The Cost Explosion**: Early versions of the risk agent were consuming 85,000 tokens per analysis - about \$0.50 just for that one agent. Turns out Claude was helpfully including the *entire* 10-K risk factors section verbatim. We got it down by tens of thousands of tokens through better context management. **Context management** is a good thing!
+
+**The Hallucinated Citation**: Once, the system confidently cited "Apple 10-K FY2024, page 47" for a revenue figure. There was no page 47. This is why we now verify every numeric claim against the source XBRL data, not the text. AI's are stochastic in nature, so use techniques to make them as **deterministic** as possible!
+
+These failures taught me that "vibe" doesn't mean "careless". The 4-hat approach (plan/approve/build/review) emerged directly from these disasters.
+
+And, it's a learning curve after all!
+
+## By The Numbers
+
+Some metrics from the project:
+
+-   **Development time**: end October '25 - Christmas '25, but amongst other pursuits.
+-   **Lines of code written by me**: 0 (literally)
+-   **Companies analysed**: 25+ in the knowledge base, with each run many times - there is nowhere to hide **AAPL**!
+-   **Analysis time**: it takes about 5-8 minutes to run full set of reports, but some caching is used, and reports are populated gradually in app as generated.
+-   **Cost per analysis**: \~\$0.30, and we will get in much lower using different models etc.
+-   **Claude Max subscription months**: 3 (and counting!)
+-   **Times I nearly gave up**: no, it is actually quite fun, really!
+-   **Regressions that broke everything**: a few issues, but git is always there.
+
+## The Vibe Analyst Manifesto
+
+For finance professionals, analysts, and anyone who works with data - this is our moment. The barrier between question and insight is dissolving. Not because AI has all the answers ( he often thinks he does), but because AI can help us build the exact tools we need to find them.
+
+The person asking the smartest questions can now build the answers.
+
+That's the vibe analyst.
+
+But let me be clear about what it's not: it's not about abdicating responsibility. I still review outputs. I still catch errors. Still make sure all the checks and balances that have always been required are still employed. The AI is a force multiplier, not a replacement for expertise.
+
+And the one very clear ongoing constant is that data quality is essential, always (yes, I know, I spend most of my life cleaning it as well)
+
+The vibe analyst knows their domain deeply, thinks critically about outputs, and treats AI as a collaborator - not an oracle.
+
+...but who knows what Claude will be doing next week - maybe I will be demoted to the team coffee maker.
+
+------------------------------------------------------------------------
+
+*Building something with vibe analytics? I'd love to hear about it. Find me on [LinkedIn](https://linkedin.com/in/stephenparton) or check out the [SEC Corporate Research Assistant](https://www.cblanalytics.com/research) to see vibe analysis in action.*
