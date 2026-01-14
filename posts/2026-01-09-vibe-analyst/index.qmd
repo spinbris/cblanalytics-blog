@@ -20,11 +20,14 @@ The term went viral, and apparently was Collins Dictionary word of the year for 
 
 But here's the thing - why should this stop at coding?
 
+I prefer to call myself a vibe analyst, a borrowed term as I will explain!
+
+
 ## Background: Corporate Research Assistant - an AI powered app to source SEC data
 
-I am not much of a coder. I'm a chartered accountant and MBA with 30+ years experience in finance, banking, and analytics. I have used code in 2 professional projects in the last 10 years (R in both cases), so at best a (R) hobby coder.
+I am not much of a Python coder. I'm a chartered accountant and MBA with 30+ years experience in finance, banking, and analytics. I have intermediate skills in R for analytics and ML use, yet I have still only formally used code in 2 professional projects in the last 10 years (although I will often run my own little stand-alone analyses). I would classify myself as a 'power user' of analytics tools and an intermediate-level R-based data scientist for when it is a good fit. I. am not a software programmer apart from that.
 
-But I have done quite a few Udemy/Coursera courses, learning various aspects of R, ML and deep learning (mostly R, although some of the early and excellent [superdatascience](https://www.superdatascience.com/) courses were 'bilingual').
+So I have done quite a few Udemy/Coursera courses, learning various aspects of R, ML and deep learning (mostly R, although some of the early and excellent [superdatascience](https://www.superdatascience.com/) courses were 'bilingual').
 
 Then in 2025 I did a couple of Ed Donner's great Udemy courses on AI (in Python!):
 
@@ -42,11 +45,24 @@ It all went pretty good for an initial 'test' project and the app/blog and githu
 
 But that was really just the beginning of the story...
 
+For after just finishing the Corporate Analysis App (to a stage), it was suddenly Christmas and we had all these frozen strawberries so we decided to start a new Christmas tradition - the Christmas morning strawberry daiquiri. But even though there is always white rum in the cabinet, alas the cupboard 'seemed' bare -  so the next AI project was born:
+
+- [Liquor Cabinet App - an AI driven bar assistant to track your inventory, tell you a bit about what each one, and suggest cocktails based on what you have, and what you might need to get your favourite cocktail mixed](https://www.cblanalytics.com/liquorcabinet). 
+
+This took less than a day to complete (Boxing day in Australia) in a programming language and framework I did not, and still don't, know (Next.js/Typescript/Tailwind et al)! 
+
+Both the apps Claude and I developed are free to use online and and can also be cloned, and I have written up separate development notes about the exoeriences on my blog.
+
+However, this note is not specifically about either app, but more about the process I (and friends) used to build them - what I am now calling 'vibe analysis' and the role of the 'vibe analyst', both being borrowed terms as mentioned.
+
+Also,while new tools and methodologies are coming through on pretty much a daily basis, this is where I am at the moment!  
+
+
 ## Beyond Code: The Vibe Analyst
 
-So when I started 'vibe coding' it was by necessity - AI was a lot better coder than I will ever be. I did mostly look at the code (review is a bit of a stretch) if only for educational reasons. I reviewed the functionality while Claude, wearing a different 'hat', reviewed the code.
+So when I started 'vibe coding' it was by necessity - AI was a lot better coder than I will ever be, especially in Python. I did mostly look at the code (review is a bit of a stretch) if only for educational reasons. I reviewed the functionality while Claude, wearing his appropriate 'hat', reviewed the code.
 
-But I am pretty good at finance and analytics, and so that was where I could add value, and I quickly realised that Claude and I were a pretty good team before we even got to the coding bit, if there even was a coding bit.
+But I am pretty good at finance and analytics, and so that was where I could add value, and I quickly realised that Claude and I were a pretty good team before we even got to the coding bit, if there a coding bit was even needed.
 
 Then I saw an article from the MIT Sloan Management Review from July, 2025 "Vibe Analytics: Vibe Coding's New Cousin Unlocks Insights". <https://sloanreview.mit.edu/article/vibe-analytics-vibe-codings-new-cousin-unlocks-insights/>
 
