@@ -10,7 +10,7 @@ draft: false
 ![](images/vibe_analytics_hero_1.png)
 
 
-Last week I built and debugged an Excel financial model with the help of 3 different Claudes, without writing a line of code or any Excel formulas. It felt good.
+Last week I built and debugged a 3-way DCF Excel financial model with the help of 3 different Claudes, without writing a line of code or any Excel formulas. It felt good.
 
 ### The Setup
 
