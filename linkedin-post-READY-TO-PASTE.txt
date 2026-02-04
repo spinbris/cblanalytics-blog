@@ -1,20 +1,13 @@
-# LinkedIn Post Draft - The Rise of the Vibe Analyst
-
-**Ed Donner's LinkedIn:** https://www.linkedin.com/in/eddonner/ **Tag him:** Type `@Ed Donner` when posting and select his profile
-
-**Image:** Upload hero.png (the app screenshot) when posting
-
-------------------------------------------------------------------------
-
 🔍 I'm not a software programmer. I'm a chartered accountant with 30 years in finance. I just built two AI-powered apps - without writing a single line of code.
 
 I do have strong analytical skills and I do use R-based data science tools when it can assist. The rest of the time I'm in MS Office and ERP land.
 
-It started with Ed Donner's great Udemy courses on AI engineering and Agentic AI (https://www.udemy.com/user/ed-donner-3/). I can't recommend them highly enough.
+It started with Ed Donner's great Udemy courses on AI engineering and Agentic AI. I can't recommend them highly enough.
+👉 https://www.udemy.com/user/ed-donner-3/
 
 Armed with that knowledge, Claude and I built:
 
-📊 SEC Corporate Research Assistant - multi-agent system analysing 10-K/10-Q/20-F filings (\~\$0.30 per company)
+📊 SEC Corporate Research Assistant - multi-agent system analysing 10-K/10-Q/20-F filings (~$0.30 per company)
 
 🍹 AI Liquor Cabinet Manager - in Next.js (a framework I don't even know!)
 
@@ -24,14 +17,14 @@ Andrej Karpathy gave us "vibe coding." I'm calling what I do "vibe analytics", b
 
 Essentially I am using a similar approach to solve different problems. Talking to AI, Claude Code Sonnet/Opus 4.5 in my case, to research analytical project ideas:
 
--   Rationality Check - am I off my tree?
--   Practicality - Can it be done, given time/resources/budget
--   What has been done to date?
--   Is there enough data?
--   What approaches might work?
--   and only then what toolsets can/should we use. Could be an app ... might just be a spreadsheet
--   let's put together a plan!
--   Do it.
+→ Rationality Check - am I off my tree?
+→ Practicality - Can it be done, given time/resources/budget
+→ What has been done to date?
+→ Is there enough data?
+→ What approaches might work?
+→ and only then what toolsets can/should we use. Could be an app ... might just be a spreadsheet
+→ let's put together a plan!
+→ Do it.
 
 For finance professionals, analysts, and anyone who works with data - this is our moment. The barrier between question and insight is dissolving. Not because AI always has all the answers (although it often thinks it does), but because AI can help us build the exact tools we need to find them. Even if AI does get it right on its own, transparency and verifiability and replicability are still required - we need a stable audit trail.
 
