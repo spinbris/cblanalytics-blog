@@ -1,10 +1,10 @@
 ---
 title: "A New Methodology for Financial Modelling with AI"
-description: "How to combine Claude's new financial plugins, Python, xlwings, and Quarto into a modern modelling workflow — building on what's now possible"
+description: "How to combine Claude's new financial plugins, Python, xlwings, and Quarto into a modern modelling workflow — building on what's now possible (pdf link now fixed!)"
 author: "Steve Parton"
 date: "2026-02-25"
-categories: [Claude, AI, Vibe Analytics, Finance, Data Analysis, DCF, Excel, Python]
-image: images/methofology_header.png
+categories: [Claude, AI, Vibe Analytics, Project Finance, Data Analysis, DCF, Excel, Python]
+image: images/methodology_header.png
 resources:
   - resources/AI_Spreadsheet_Tools_Guide_Feb2026_1.pdf
 draft: false
