@@ -5,6 +5,8 @@ author: "Steve Parton"
 date: "2026-02-25"
 categories: [Claude, AI, Vibe Analytics, Finance, Data Analysis, DCF, Excel, Python]
 image: images/methofology_header.png
+resources:
+  - resources/AI_Spreadsheet_Tools_Guide_Feb2026_1.pdf
 draft: false
 ---
 
