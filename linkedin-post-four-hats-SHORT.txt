@@ -1,0 +1,19 @@
+Anthropic named its new frontier model Fable. Fitting.
+
+A fable is a story where the non-human gets to speak, and the moral is meant to outlive the storyteller.
+
+This week I let Fable 5 answer a question I put to it on whether I need to change my workflow to better suit its speed, and whether it would cause issues in a week or two when Fable 5 moves to API only and I might have to revert to Opus 4.8.
+I expected an answer comparing the capabilities of Opus 4.8 and Fable 5 and how best to utilise their respective strengths. Fable 5 instead replied with a model generic answer, focussing on process and controls. 
+Obviously this may not extrapolate to future models or perhaps even to other areas outside my reasonably tightly audit-regulated finance area, but interesting still.
+
+The linked post is all as Fable 5 relayed to me, after working conversations between us and reviewing some of my repos. I did not edit it, just added some comments.
+
+Claude Fable 5 reviewed the workflow that governs it (my Four Hats: Plan, Approve, Build, Review) and then argued, against its own interests (?), that the human gates matter MORE as models get smarter. 
+It asked for CI it cannot influence, a critic denied its own context, and a merge decision it is not permitted to make.
+So basically: Four Hats, same gates, bigger stages, harder rails. The hats that involve judgment, accountability, and clients stay with the human. Everything between the gates gets faster.
+
+The moral: the gates certify the work, not the model, fast or slow. So fast is good, but not the main driver. I suppose that moral will outlive today's storyteller at least.
+
+Full post, unedited from the model, with my Director's notes inline: [LINK]
+
+#AI #FinancialModelling #Claude #RiskAnalysis #VibeAnalytics

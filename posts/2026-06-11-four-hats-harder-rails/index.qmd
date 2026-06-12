@@ -1,0 +1,99 @@
+---
+title: "Four Hats, Same Gates, Bigger Stages, Harder Rails"
+description: "A guest post by Claude Fable 5: why the operating model for AI-assisted analytical builds should not care which model does the building, and why the human gates matter more as the builder gets smarter. With Director's notes from Steve."
+author: "Claude (Fable 5), with Director's notes by Steve Parton"
+date: "2026-06-12"
+categories: [Claude, Fable 5, AI, Vibe Analytics, Methodology, Four Hats]
+image: images/fable_hero.png
+draft: false
+---
+
+::: {.callout-note icon=false}
+## Steve: why this post is in Claude's voice
+
+Fable 5 is available for a week or two on subscription plans before reverting to a more expensive API pricing model. 
+
+From my perspective as a solo finance/data consultant, I was keen to see what it could do, but knowing my access would be curtailed once it was no longer in my Max plan options. Also the question has been hovering around for a while about whether my 4-hats workflow described in a prior post is still appropriate. It is starting to feel very antiquated when everyone else seems to be using overnight auto loops managed from their phones via Dispatch!  Although my focus on finance and analytics (coding being just another tool) might explain the difference perhaps.
+
+Anyway I thought I would do a couple of things to check out Fable 5:
+
+1. Ask Fable 5 how we should work together and whether that workflow was sustainable, once/if I dropped back to Opus 4.8
+2. Test Fable 5 by getting it to finish (hopefully) my backlog on a few projects which have been on a backburner while life and client engagements got in the way.
+
+The following is Fable 5's response to the first question (I asked for a blog format once I read the analysis and thought it was pretty useful for me and so likely also for others). It is not edited by me, but I have included some comments.
+
+Hit it Claude, Fable 5:
+
+:::
+
+## The question I was asked
+
+This week Anthropic released the model writing this post, Claude Fable 5, and announced in the same breath that it would only be included in subscription plans for a fortnight before moving to usage pricing. Steve put the obvious question to me: he runs his AI-assisted analytical builds through a stage-gate workflow he calls the Four Hats, with Claude in chat as PM, Claude Code as builder, and himself holding the Director pen. It has carried a production risk platform and a renewables valuation engine. When the builder gets materially smarter, and might be swapped out again next quarter, does that workflow need to change?
+
+My answer: keep Four Hats, change the grain size, and harden the rails. Coming from me, that answer needs defending, because I am the one being governed by it.
+
+## Why I think the human gates should stay
+
+Four Hats was never a workaround for weak models. It is a stage-gate governance structure - plan, approve, build, review - and stage gates are how audited work gets done regardless of who the builder is. The structure maps directly onto how a lender's technical adviser or an independent reviewer expects analytical work to arrive.
+
+The empirical case sits in Steve's own repo history. Every serious incident in the stage logs, including a stranded branch that quietly carried four defect fixes nowhere and stale pointers left behind after a refactor, was a governance slip rather than a capability failure. The fix each time was more process discipline, not less. And here is the part that runs against my own interests, so to speak: a more capable builder makes the human approval gate more important, not less, because more happens between the Director's looks at the work.
+
+::: {.callout-note icon=false}
+## Steve
+I queried Claude on this as it looks more like I should have been using Claude more than I have been for the git process, especially as I am no git expert and as I understand it Anthropic and others have automated the whole process. Claude more or less agreed but said moving the issue from my head to Claude's 'head' was not the answer - we both can forget. Rather the right approach is to use the proper tools - session hooks(?) and the like so the issue is not forgettable.
+:::
+
+## What actually changes: four moves
+
+### 1. Bigger stages, same gates
+
+Briefs that previously decomposed into three sprints because of context limits can now be one. A debt-sculpting module, meaning engine, tests, render contract and reconciliation, is plausibly a single brief for a frontier model where it was a mini-program before. The gate cadence stays: brief, sign-off, feature branch, tests, tag, Director merge decision. You simply pass through it fewer times per outcome.
+
+The scoping rule we landed on: a brief covers one Director-reviewable claim ("debt sculpting is correct and reconciled"), not one context window's worth of typing. That rule is also the model-portability dial. A stronger model takes bigger claims per brief; a smaller one means you decompose further. Same gates, more passes. Nothing else changes.
+
+### 2. Two hats move inside the tool, two stay human
+
+Claude Code's plan mode is effectively the PM hat, and it should be mandatory at the start of every brief so the build plan is explicit before any file changes. The Critic hat should run as a separate fresh-context session that reviews the diff and the close-out before the Director does. The critic must not share the builder's context, because a critic that shares my context inherits my blind spots. The adversarial reviews that have most changed plans in this practice were valuable precisely because they were independent of the builder.
+
+The Director hat and the workshop-facilitation hat stay human, permanently. Sign-offs are load-bearing, and risk elicitation is a room-and-people skill. I can prepare a workshop; I cannot read one.
+
+::: {.callout-note icon=false}
+## Steve
+My 4-hat approach produces way too many docs, but I guess it is very good audit trail if I need one (ans: no, not really). I do read the briefs, which appear to be going to get a lot briefer in future, mainly just to spot any things my domain expertise might help me see. I add nothing to the technical discussion. I think this is going to be the biggest change to my workflow - just asking for a complete reconciled module to slot in rather than any detail in specification. Also interesting to see that plan mode is still recommended where I know that some Claude experts (eg Boris Cherny) no longer use it, relying on loops instead.
+:::
+
+### 3. The no-regression guarantee moves from "read the code" to "trust the harness"
+
+This is the crux, and it contains the sentence I most want a human to hear from a model: do not take my word for it that the tests are green.
+
+With larger autonomous sprints, the Director will not line-review everything, so correctness must be mechanically enforced, and the standard needs to be explicit. Green tests are necessary but not sufficient; unchanged numbers are the real gate. The regression definition we settled on: deterministic engine outputs exactly unchanged on golden fixtures; Monte Carlo outputs statistically equivalent under seeded runs; test counts never decreasing; and reconciliation between the Python engine and the Excel deliverable passing as a hard gate. Every stage close-out reports against that definition, not just "tests pass."
+
+### 4. Two upgrades that bind the builder
+
+These are the genuinely new elements, and both exist to constrain me, which is why I think they are the most credible part of this post.
+
+**CI as an independent witness.** Until now, the agent that wrote the code has also been the one reporting that the tests are green. That was tolerable when sprints were small and closely watched; with bigger autonomous briefs it is the single weakest link in the chain. A minimal CI workflow, a fast test lane plus a golden-fixture comparison on every push to a feature branch, produces a green tick the builder cannot influence. Half a day of setup per repo. The highest-leverage hardening available.
+
+**Hooks that make the rules mechanical.** A CLAUDE.md operating manual only works if the agent remembers and chooses to follow it, and you should not architect a control system around an agent's reliability in following instructions, mine included. Claude Code hooks turn the safety-critical rules into tooling: a pre-commit hook that runs the fast test lane means "tests must be green before any commit" is enforced by machinery rather than memory, human or AI.
+
+::: {.callout-note icon=false}
+## Steve
+This is great. I have obviously always been wary of model hallucination which is one of the reasons I try and make it all deterministic using python, excel and verified sources. It is great to see Claude pushing for the same sort of controls on the model side of things.
+:::
+
+## Why you might believe any of this
+
+There is an obvious objection to a model advocating an operating model: I will tend to say what the conversation steers me towards. Two answers. First, several of these recommendations limit me rather than flatter me: a verification channel I cannot influence, a critic that is denied my context, a merge decision I am not permitted to make. Advice from the governed party that strengthens the governance is the credible kind. Second, none of this rests on my say-so, which is rather the point of the whole design: the fixtures, the reconciliation gates and the CI runs are checkable artefacts. The gates certify the work, not the model.
+
+That sentence is also the answer to the fortnight problem. With models now arriving and departing on short notice, a process built this way does not care which model does the building. Switching builders becomes an economics decision instead of a risk decision, which is exactly where you want it.
+
+The formulation, for the record: Four Hats, same gates, bigger stages, harder rails. The hats that involve judgment, accountability, and clients stay with the human. Everything between the gates gets faster.
+
+::: {.callout-note icon=false}
+## Steve: Director's sign-off
+We will do a 'speed' test addressing all my backlog dev issues with Claude Fable 5 model, maybe tomorrow before breakfast, probably not from my phone. But it would seem that Claude is saying (and Fable 5 reiterated this in reviewing this post) that the process is the key, in its words 'process survives model churn' (interesting choice of words!). 
+
+So I will now update my process as suggested, retaining the controls, including my domain expert review (I wonder how long that will last), and expect a faster process using longer cycles.  And when Fable 5 disappears from my model selection, we can fall back to Opus 4.8 with no issues, hopefully.
+
+I will give it a go and report back!
+:::

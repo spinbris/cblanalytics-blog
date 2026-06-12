@@ -1,0 +1,78 @@
+---
+title: "From Mode to CPM: Building a Professional Risk Platform the Vibe Analytics Way"
+description: "What happens when a finance consultant with no Python skills takes on an enterprise-grade cost and schedule risk quantification engagement — and decides to build everything from scratch with Claude?"
+author: "Steve Parton"
+date: "2026-06-05"
+categories: [Claude, AI, Vibe Analytics, Project Finance, Monte Carlo, Risk Analysis]
+draft: true
+---
+
+## The Brief Arrives
+
+About ten weeks ago, I got involved in a reasonably large gas infrastructure project — cost Monte Carlo, quantitative schedule risk, integrated cost-plus-schedule contingency, client deliverable in Word and HTML. I have done the cost and monte carlo analyses many time in the past for feasibility and business cases. I have never done a schedule risk analysis however as never before that close to the actual construction. Given the nature of the assignment, I went for Claude/Python solution rather than Saas.
+
+This post is about what happened.
+
+### Why Not Just Buy the Tool?
+
+There are good off-the-shelf risk platforms, but timing issues and the nature of the required output suggested Python might be more appropriate for the quantitative analysis (and the schedule risk analysis requirement came as a bit of a surprise once committed)
+
+### Starting From Zip: Excel as the Anchor
+
+The obvious first question was architecture. My instinct was to keep Excel as the core — stakeholders understand it, it stays operational as a standalone model, and my client could update assumptions in a familiar environment without touching any code. Python would sit alongside and do what spreadsheets do badly: 100,000 Monte Carlo iterations, statistical analysis, reproducible reporting.
+
+The bridge between them is xlwings, which lets Python read named ranges and parameters from an open Excel workbook. Stage 1 of the build was the core Monte Carlo engine in Python, reading risk parameters from Excel, running simulations, and writing key-value results back to a named range that XLOOKUP formulas on the dashboard could consume. I did not write a single line of Python. I described what I wanted to the team — Claude Chat as PM drafting the implementation plan, Claude Code CLI as the builder executing it — and we worked through it stage by stage.
+
+A few points from those early stages that I still think about:
+
+The **4-hat workflow** (Plan → Approve → Build → Review) turned out to be non-negotiable on a professional engagement. I had gone more casual on previous projects and paid for it with regressions. Here, every stage had a brief, every brief was reviewed before implementation began, and nothing merged without tests passing. Claude Code CLI would flag issues it found in the codebase before touching a line — this alone saved a lot of grief.
+
+Excel/Python **interop is messier than you expect**. The SRA phase involved parsing a Primavera P6 export with 2,027 activities and 5,982 logic links. Getting that data cleanly out of Excel via openpyxl took six iterations just to get the formula caching right. Excel lock files (the `~$` ghost file that appears when someone has the workbook open) silently return `None` values for formula cells. We added a pre-flight check that raises immediately if it finds one. Detail like this is the difference between a prototype and something you can trust.
+
+I also built most of the early stages on a boat from Bali, which was either a great demonstration of the workflow or a sign I need better hobbies.
+
+### The Mode Approach
+
+The schedule risk analysis used a methodology I will call "mode-based" - classifying each risk's network effect as Series, Hybrid, or Parallel, then applying a multiplier to translate duration impact into cost impact. It is a reasonable Tier 2 approach: defensible, fast to implement, and you can explain it to a client.
+
+The trouble is, mode multipliers are a proxy. You are not actually simulating what happens to the critical path when a risk fires. You are multiplying a number. For low-stakes work that might be fine. On this engagement, the issue was more about risk sharing buffers, which meant that the mode approach was probably OK as well. To be on the safe side though we ran the full CPM approach, admittedly a little after the fact, but came up with a number close to the mode approach. I have since worked with Claude to bake the full CPM into the approach, almost there!  
+
+
+### The CPM Reckoning
+
+So we built Stage 3: a full CPM-replay simulation. Each Monte Carlo iteration fires the relevant risks, applies the duration perturbations, walks the full Primavera network forward, and reads the project finish date from the critical path result. No proxies. No multipliers. The delay is what the schedule says it is.
+
+This was a larger build than everything that came before it combined. The XER parser, the CPM kernel, the activity criticality index, the auto-mapper linking risks to their affected activities, the Mode-independent criticality metrics per AACE 65R-11 — each of these was its own sprint with its own brief and tests. Claude Code CLI wrote all of it. My contribution was methodology: which PERT parameters, what the AACE standard requires, how joint sampling between cost and schedule should work (eight dual-coded risks share one severity draw per iteration; independence at that point would be wrong).
+
+As mentioned the resulting P80 number (which admittedly is not the key P number for risk sharing analytics)  moved, not dramatically, but measurably, and in the direction you would expect from a model that was no longer suppressing the tail. So all good, even if not particularly relevant to the current engagement.
+
+### Closing the Loop: Active Management
+
+A risk quantification deliverable is a point-in-time document. For ongoing project monitoring, you need something that updates as conditions change — actual progress against baseline, risks that have fired, new risks that have emerged. The final phase was an active management layer: a monthly engine that takes a status-period workbook from the analyst, re-runs the Stage 3 CPM engine with pinned risk states, and writes a structured JSON that a dashboard reads.
+
+The dashboard is a Next.js/TypeScript/React app deployed on Vercel. I do not know TypeScript. I do not know React beyond a passing acquaintance. Claude did the whole thing in a single sprint on May 28, eight dashboard pages covering four PM views and four analyst views with recharts and a custom stochastic Gantt chart, live at a Vercel URL with deployment protection.
+
+The entire active management repo — engine, JSON contract, dashboard — went from brief to deployed in one day. That is not a vibe analytics outcome I would have predicted when we started. The one qualification is that it works fine, but that does not stop me from fiddling with it - eg still need more explanation on the 'whys' of the changes over time.
+
+### What the Vibe Analytics Approach Actually Means (Professionally)
+
+On hobby projects, vibe analytics is liberating. On a professional engagement, it is still liberating, but the constraints are real: the methodology has to be correct, the audit trail has to exist, the deliverable has to be defensible to a client and to the AACE standard it references. The 4-hat workflow, the brief-first discipline, the bit-identity tests on simulation results — none of that is optional when the P80 figure feeds a commercial negotiation.
+
+What changes is where the work lives. I spent my time on methodology decisions: which distribution for which risk, whether a risk was Series or Parallel, what the day rate should be, when to trust the number and when to keep testing. Claude spent its time on implementation: reading that intent from a brief and converting it to working, tested Python code.
+
+That division of labour is actually very natural for an experienced finance professional. The methodology knowledge is the hard part. The code was always the barrier. It is not a barrier anymore.
+
+### By the Numbers
+
+- **Engagement duration (full build)**: 10 weeks, March to May 2026
+- **Lines of Python written by me**: 0
+- **Lines of TypeScript/React written by me**: 0
+- **Named stages with formal briefs**: 40+
+- **Test count at close**: 200+ fast-lane tests across both repos
+- **Monte Carlo iterations (production run)**: 100,000, but fast (vectorised numpy)
+- **SaaS platforms purchased**: 0
+- **Times the openpyxl/Excel interop caused grief**: there's got to be a better way..
+
+---
+
+*Steve Parton is a finance and analytics consultant at SJP Consulting. If you are building something in the project finance or risk analytics space and want to talk methodology, find me on [LinkedIn](https://linkedin.com/in/stephen-parton).*
