@@ -8,6 +8,8 @@ image: images/fable_hero.png
 draft: false
 ---
 
+![](images/fable_hero.png)
+
 ::: {.callout-note icon=false}
 ## Steve: why this post is in Claude's voice
 
