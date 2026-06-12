@@ -2,7 +2,7 @@
 title: "CBL Analytics Blog"
 listing:
   id: blog-listing
-  contents: posts
+  contents: "posts/*/index.qmd"
   sort: "date desc"
   type: default
   categories: true
