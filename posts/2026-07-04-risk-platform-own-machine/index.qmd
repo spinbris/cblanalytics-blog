@@ -1,0 +1,165 @@
+---
+title: "Cost and Schedule Risk, CPM Replay, On Your Own Machine"
+description: "A register-driven Monte Carlo platform for project contingency: Excel in front, a Python engine behind, full CPM replay for schedule risk, and no data leaving the building. All numbers from a synthetic showcase project."
+author: "Steve Parton"
+date: "2026-07-04"
+categories: [Risk Analysis, Monte Carlo, QRA, SRA, Project Finance, Claude, Vibe Analytics]
+draft: true
+---
+
+*Everything shown in this post comes from a synthetic showcase
+project, a wind farm that exists only as a test fixture. The method
+is exactly what runs on client engagements; the numbers are not. It is however all based on recent experiences just in a different industry*
+
+## The gap
+
+To run quantitative risk analyses (QRA) and schedule risk analyses (SRA) on a mid-sized capital project, you're choice of approaches is 
+your options are thin. The tool much of the industry grew up on has
+not had a major release in over a decade. The credible replacement
+is priced and positioned for megaproject portfolios. Newer
+cloud platforms are impressive, but they want your schedule uploaded
+to their servers and priced as a percentage of project value, and
+their distributions come from historical benchmarks rather than your
+project's own risk register.
+
+So most projects between $25M and a few hundred million get a static
+spreadsheet register and a P80 someone once calculated. Government
+business cases in Australia still require probabilistic contingency
+at exactly this scale, so a bit of an issue.
+
+So Claude and I rolled our own.
+
+<!-- IMG-1: dashboard PM overview page, synthetic 4-period arc -->
+
+## What it is
+
+An integrated cost and schedule risk solution that runs on a laptop that handles:
+ - the initial QRA/SRA prior to project start.
+ - the ongoing active QRA/SRA management during construction.
+
+The risk register is in Excel comprising usual information about risk identification, mitigation, quantitative and schedule assessments with a short cut QRA using the 
+Excel sits in front: the risk register, the parameters, the
+dashboard your steering committee reads. A Python engine sits
+behind it: 100,000 (or whatever) Monte Carlo iterations, vectorised, seeded,
+reproducible to the bit. Between them, a contract of named ranges,
+so the analyst updates assumptions in a familiar workbook and never
+touches code.
+
+The risks come from a facilitated workshop and live in a register
+with distributions your reviewers can interrogate line by line. That
+is a deliberate methodological position: an auditor, a lender's
+technical adviser or a funding department can walk from any P-value
+back to a named risk, an elicited range and a documented rationale.
+No black box, no benchmark blend.
+
+<!-- IMG-2: Excel workbook dashboard sheet, synthetic wind project -->
+
+## Schedule risk without proxies
+
+Cost Monte Carlo is well-trodden. Schedule risk is where methods
+diverge. The common shortcut classifies each risk's network effect
+(series, parallel, somewhere between) and applies a multiplier to
+convert duration impact to cost. It is fast, explainable, and for
+many purposes defensible. It is also a proxy: nothing actually
+happens to the critical path.
+
+This platform started tiered, with the multiplier approach as the
+first pass, and then we built the full thing: a CPM replay engine.
+Every iteration fires its sampled risks, perturbs the affected
+activities, walks the entire Primavera network forward (the parser
+and kernel handle networks of thousands of activities and logic
+links), and reads the finish date the schedule itself produces. The
+delay is whatever the critical path says it is.
+
+The validation result is the part worth a paragraph. When we ran the
+same register through both methods, the multiplier approach and the
+CPM replay produced P-values within touching distance of each other,
+with the replay showing a slightly fuller tail, exactly where you
+would expect a proxy to under-read. Two independent methods agreeing
+is what defensibility looks like in practice: the fast method is
+validated for triage, the replay method carries the number that
+matters, and the comparison itself goes in the report. Criticality
+metrics follow AACE 65R-11, so the reviewer sees a standard they
+recognise.
+
+<!-- IMG-3: tornado / criticality chart, engine-generated PNG from synthetic run -->
+<!-- IMG-4: cost-schedule S-curve overlay, engine-generated PNG from synthetic run -->
+
+## The unglamorous parts are the product
+
+Two war stories, because detail like this is the difference between
+a prototype and something you can trust.
+
+Excel lock files. When a workbook is open, Excel plants a ghost file
+(the `~$` prefix) and formula cells can quietly read back as empty
+to code. Quietly is the problem: no error, wrong inputs. The engine
+now runs a pre-flight check that refuses to start if it finds one.
+
+Formula caching. Getting clean values out of a workbook that mixes
+hand-entered numbers with calculated cells took six iterations to
+get right. The rule that emerged: the engine either reads a value it
+can verify or it stops with a named error. It never guesses. That
+rule (fail closed, never fabricate) is now enforced across the
+platform by more than 1,900 automated tests, golden fixtures that
+must reproduce bit-identical results, and a cross-validation gate
+that reconciles the Python engine against the Excel deliverable
+before anything ships. I built part of the early engine on a boat
+off Bali, which says something about the workflow, or my hobbies.
+
+## After the report: the monthly loop
+
+A contingency study is a photograph. Projects move. The platform's
+third layer re-runs the full CPM engine each reporting period
+against updated actuals and risk states, and publishes to a web
+dashboard: stochastic Gantt, drivers, and a what-changed view that
+explains why this month's P80 is different from last month's. The
+project team maintains the register; the engine and a reviewing
+practitioner do the rest. The split matters for adoption: the
+register-keeper on the project team needs nothing beyond Excel and a
+browser. Python, the engine and the report toolchain belong to the
+trained risk analyst who runs the period cycle. The dashboard stays
+alive only while the engine keeps feeding it, which is how a
+leave-behind should work.
+
+<!-- IMG-5: dashboard stochastic Gantt, synthetic periods -->
+<!-- IMG-6: dashboard what-changed / delta view -->
+
+## Where the analyst fits
+
+I have run cost risk on feasibility studies and business cases for
+thirty years. What changed is not the method, it is who does the
+typing. Claude wrote every line of the Python and the dashboard; my
+contribution was the methodology: which distribution for which risk,
+how cost and schedule severity should share a draw when one event
+hits both, what the AACE standard requires, and when to trust the
+number. That division of labour suits an experienced analyst
+unreasonably well. The methodology knowledge was always the hard
+part. The code was the barrier, and it is gone.
+
+Which is the real point of this post. Tools like this do not replace
+the analyst. They move the analyst up a level, the same way
+spreadsheets did in the eighties: the computation gets cheap, the
+judgment gets valuable, and in a world where anyone can generate an
+analysis, the analyst whose numbers can be verified is the one who
+gets believed.
+
+## By the numbers (synthetic showcase run)
+
+- Monte Carlo iterations per run: 100,000, seeded, reproducible
+- Schedule engine: full CPM replay, networks of thousands of
+  activities and links
+- Automated tests behind the platform: 1,900+
+- Lines of Python written by me: 0
+- Data leaving the building: none, it runs on a laptop
+- SaaS subscriptions required: 0
+
+If your project needs a contingency number that will survive review,
+or your analysts are still doing this by hand, the methodology
+conversation is the interesting one.
+
+---
+
+*Steve Parton is a finance and analytics consultant at SJP
+Consulting. If you are working in project risk or infrastructure
+finance and want to talk methodology, find me on
+[LinkedIn](https://linkedin.com/in/stephen-parton).*
