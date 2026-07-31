@@ -70,7 +70,7 @@ To have something showable, I run a synthetic 100 MW wind farm called Tropic Rid
 
 ![The Cover sheet — identity, headline KPIs, live status banner.](cover_wind.png){fig-alt="Tropic Ridge Wind Farm Excel cover sheet with version stamp, headline results, PASS status banners and a hyperlinked table of contents"}
 
-![The Simulation_Analysis sheet — the engine's Monte Carlo results (histogram and S-curve) embedded in Excel beside the numeric table, stamped with the run id and seed, and honest about being a snapshot of the last run.](sim_analysis.png){fig-alt="Excel Simulation Analysis sheet showing Monte Carlo input assumptions, output statistics, an NPV histogram with P10 P50 P90 markers and an S-curve, with a run id, seed and STATIC banner"}
+![The Simulation Analysis sheet — the engine's Monte Carlo results embedded in Excel beside the numeric table, stamped with the run id and seed.](sim_analysis.png){fig-alt="Excel Simulation Analysis sheet showing Monte Carlo inputs, output statistics, an NPV histogram and an S-curve with a run id, seed and STATIC banner"}
 
 ## The model comes to life
 
@@ -81,3 +81,5 @@ This generation process collapses that stretch - the plumbing arrives finished (
 Next in this series: the verification layer in full — the reconcile that fails closed, the workbook that describes itself, and what happens when someone edits a cell.
 
 Tropic Ridge is a synthetic project, and everything here is for analytical and illustrative purposes only, not investment advice.
+
+
