@@ -4,9 +4,11 @@ description: "A renewables feasibility model built from one config file: Excel i
 author: "Steve Parton"
 date: "2026-07-31"
 categories: [Financial Modelling, DCF, Renewables, Project Finance, Claude, Vibe Analytics]
-image: cover_wind.png
+image: images/tropic_ridge_banner.png
 draft: false
 ---
+
+![](images/tropic_ridge_banner.png)
 
 *(A separate series covers the QRA/SRA risk quantification platform — different project, same working method.)*
 
