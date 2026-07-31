@@ -23,8 +23,8 @@ The renewables model I have been building starts from a single specification: ca
 From that one file, deterministic Python code produces three deliverables:
 
 - an Excel workbook, with assumptions in blue, formulas in black, checks, scenarios, sensitivities and headline KPIs. A normal, fully functional three-statement DCF that stands alone. No Python, no AI and no add-ins are needed to use it. This is the working model an analyst takes forward.
-- a Python engine that mirrors the same calculations and adds the analytics Excel struggles with: Monte Carlo simulation, sensitivity sweeps, multi-scenario runs (yes, ok, data tables and VBA help with all this but more as permanent workarounds).
-- a skeleton feasibility report with the tables and charts already populated, ready for the analyst to add narrative. No copying and pasting numbers.
+- a Python engine that mirrors the same calculations and adds the analytics Excel struggles with: Monte Carlo simulation, sensitivity sweeps, multi-scenario runs (yes, ok, data tables and VBA help with all this but more as permanent workarounds). Its results are written back into the workbook as a clearly stamped static snapshot — Excel carries the evidence of the last run, and flags if the inputs have moved since — and rendered in full in the report.
+- a skeleton feasibility report with the tables and charts already populated, ready for the analyst to add narrative. This is where the analytics presentation lives — scenario tables, tornado, Monte Carlo distribution and S-curve, generated not pasted. No copying and pasting numbers.
 
 ![The spec — the model on one page.](spec_yaml.png){fig-alt="Two-column view of the Tropic Ridge YAML spec with the periods_pa and asset type lines highlighted"}
 
@@ -66,9 +66,11 @@ Change logs and versioning document both.
 
 ## A worked example: Tropic Ridge
 
-To have something showable, I run a synthetic 100 MW wind farm called Tropic Ridge. The assumptions are realistic-ish for an onshore site; there is no real client anywhere near it. The workbook lands with the usual KPI set on its cover — NPV, project and equity IRR, minimum DSCR, payback, terminal value — plus scenario tables, sensitivity tornadoes and Monte Carlo distributions beside them. The values are synthetic, so the outputs are meaningless - just there to populate screenshots. The point is what arrives already built, before an analyst has touched anything.
+To have something showable, I run a synthetic 100 MW wind farm called Tropic Ridge. The assumptions are realistic-ish for an onshore site; there is no real client anywhere near it. The workbook lands with the usual KPI set on its cover — NPV, project and equity IRR, minimum DSCR, payback, terminal value — plus scenario tables, and the engine's sensitivity tornadoes and Monte Carlo distributions embedded beside their numeric tables as a stamped snapshot of the last analytics run. The values are synthetic, so the outputs are meaningless - just there to populate screenshots. The point is what arrives already built, before an analyst has touched anything.
 
 ![The Cover sheet — identity, headline KPIs, live status banner.](cover_wind.png){fig-alt="Tropic Ridge Wind Farm Excel cover sheet with version stamp, headline results, PASS status banners and a hyperlinked table of contents"}
+
+![The Simulation_Analysis sheet — the engine's Monte Carlo results (histogram and S-curve) embedded in Excel beside the numeric table, stamped with the run id and seed, and honest about being a snapshot of the last run.](sim_analysis.png){fig-alt="Excel Simulation Analysis sheet showing Monte Carlo input assumptions, output statistics, an NPV histogram with P10 P50 P90 markers and an S-curve, with a run id, seed and STATIC banner"}
 
 ## The model comes to life
 
