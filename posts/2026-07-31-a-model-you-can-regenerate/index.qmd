@@ -5,7 +5,7 @@ author: "Steve Parton"
 date: "2026-07-31"
 categories: [Financial Modelling, DCF, Renewables, Project Finance, Claude, Vibe Analytics]
 image: cover_wind.png
-draft: true
+draft: false
 ---
 
 *(A separate series covers the QRA/SRA risk quantification platform — different project, same working method.)*
@@ -81,5 +81,4 @@ This generation process collapses that stretch - the plumbing arrives finished (
 Next in this series: the verification layer in full — the reconcile that fails closed, the workbook that describes itself, and what happens when someone edits a cell.
 
 Tropic Ridge is a synthetic project, and everything here is for analytical and illustrative purposes only, not investment advice.
-
 
