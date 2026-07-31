@@ -9,35 +9,35 @@ draft: true
 
 *Everything shown in this post comes from a synthetic showcase
 project, a wind farm that exists only as a test fixture. The method
-is exactly what runs on client engagements; the numbers are not. It is however all based on recent experiences just in a different industry*
+is exactly what runs on client engagements, the numbers are not.
+The idea was to test what could be achieved with AI, so some of what we did is just to test what can be done, not necessarily to identify what should be done!*
 
 ## The gap
 
-To run quantitative risk analyses (QRA) and schedule risk analyses (SRA) on a mid-sized capital project, you're choice of approaches is 
-your options are thin. The tool much of the industry grew up on has
+To run quantitative risk analyses (QRA) and schedule risk analyses (SRA) on a mid-sized capital project, your choice of approaches is
+thin. The tool much of the industry grew up on has
 not had a major release in over a decade. The credible replacement
 is priced and positioned for megaproject portfolios. Newer
 cloud platforms are impressive, but they want your schedule uploaded
 to their servers and priced as a percentage of project value, and
 their distributions come from historical benchmarks rather than your
-project's own risk register.
+project's own risk register. Also sometimes you don't need everything these solutions provide, you just need what is relevant to the project at hand.
 
-So most projects between $25M and a few hundred million get a static
-spreadsheet register and a P80 someone once calculated. Government
-business cases in Australia still require probabilistic contingency
-at exactly this scale, so a bit of an issue.
+We did not need the full solution and did not have much time, so we had a brainstorm session with Claude and decided to roll our own.
 
-So Claude and I rolled our own.
+After the project was complete we went back and extended it, that functionality also included below.
+
+
 
 <!-- IMG-1: dashboard PM overview page, synthetic 4-period arc -->
 
-## What it is
+## What we built
 
 An integrated cost and schedule risk solution that runs on a laptop that handles:
  - the initial QRA/SRA prior to project start.
  - the ongoing active QRA/SRA management during construction.
 
-The risk register is in Excel comprising usual information about risk identification, mitigation, quantitative and schedule assessments with a short cut QRA using the 
+The risk register is in Excel with the usual information about risk identification, mitigation, quantitative and schedule assessments with a short cut QRA using the
 Excel sits in front: the risk register, the parameters, the
 dashboard your steering committee reads. A Python engine sits
 behind it: 100,000 (or whatever) Monte Carlo iterations, vectorised, seeded,

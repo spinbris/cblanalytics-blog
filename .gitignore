@@ -1,3 +1,6 @@
 /_site/
 /.quarto/
 .DS_Store
+
+# Machine-local working drafts - salvage notes reference real-engagement details; never publish
+/posts/_working_consolidated_showcase/
