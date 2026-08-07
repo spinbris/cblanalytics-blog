@@ -4,8 +4,11 @@ description: "A quantitative cost and schedule risk baseline for a project that 
 author: "Steve Parton"
 date: "2026-08-06"
 categories: [Risk Analysis, Monte Carlo, QRA, SRA, Project Finance, Claude, Vibe Analytics]
+image: images/hero.png
 draft: false
 ---
+
+![](images/hero.png)
 
 *Tropic Ridge Wind Farm is a fictional project (which I also use for demonstrating new DCF modelling techniques). While this model is purely for demonstration purposes, the methodology is real and is the same one I ran on
 a live infrastructure engagement.*
