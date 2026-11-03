@@ -13,7 +13,7 @@ draft: false
 *Tropic Ridge Wind Farm is a fictional project (which I also use for demonstrating new DCF modelling techniques). While this model is purely for demonstration purposes, the methodology is real and is the same one I ran on
 a live infrastructure engagement.*
 
-*Updated 03/11/2026: figures re-run after rescaling Tropic Ridge to a realistic 40 MW, $120M project and adding shared risk drivers. The method is unchanged; the numbers below are the current run.*
+*Update, November 2026: the figures in this post are the August baseline. Tropic Ridge has since been rescaled to a realistic 40 MW, $120M project and the model extended with shared risk drivers. What changed, and why the headline gap shrank, is in [Tropic Ridge, re-run](../2026-11-04-tropic-ridge-rerun/index.qmd).*
 
 ## What we Built
 
@@ -47,7 +47,7 @@ Incorporating checks and balances in both the Python code development and the Ex
 
 Its also worth noting that while this analysis is software in nature it was not developed as an 'app'. It is a tool to facilitate the analysis. The value lies in the analysis and related knowledge not in the tool, which was built by Claude with my direction to meet the specific requirements of this analysis, not as a generic software app. That does not mean it is not replicable though.
 
-The rest of this post walks through what we put together, using a synthetic project we made up called Tropic Ridge Wind Farm - a 40 MW, $120M wind farm with 176 scheduled activities and a 29-risk register, with a pre-construction P80 risk contingency (cost and schedule together) of $14.34M, or 11.9% of base, all of which traces back to a specific named risk.
+The rest of this post walks through what we put together, using a synthetic project we made up called Tropic Ridge Wind Farm - a $50M wind farm with 171 scheduled activities and a 35-risk register with a pre-construction P80 risk total (cost/schedule total) of $6.84M at P80 all of which traces back to a specific named risk.
 
 
 
@@ -107,7 +107,7 @@ the other.
 
 The cost arm samples each risk's probability and three-point severity and
 produces the familiar S-curve and tornado. For Tropic Ridge, cost risk lands
-at $10.97M at P80.
+at $5.41M at P80.
 
 <!-- IMG SLOT: cost S-curve + tornado (outputs/wind_showcase/figs) -->
 
@@ -116,45 +116,42 @@ ranking, not a textbook variance decomposition. It answers "what moves the
 P80 if this risk goes away", which is usually the question being asked.
 
 The schedule risk engine parses the project
-programme - all 176 activities and their logic links - and then re-solves
+programme - all 171 activities and their logic links - and then re-solves
 the critical path inside every one of the 100,000 iterations. A risk that
 fires on an activity with float gets absorbed by the float. A risk that fires
 on the driving path moves the completion date. Nothing is muted or scaled by
 a prior judgement about what matters; the network decides, iteration by
 iteration, which is the approach AACE's recommended practice 65R-11 points
-to. Schedule risk lands at 99.9 working days at P80, which at Tropic Ridge's
-delay rate of $35,000 a day is $3.50M.
+to. Schedule risk lands at 53.6 days at P80, which at Tropic Ridge's delay
+rate is $1.88M.
 
 <!-- IMG SLOT: schedule finish S-curve + activity criticality chart -->
 
 A useful by-product: because the critical path is discovered rather than
 assumed, the engine reports how often each activity actually drove the finish
-date. Of 176 activities, 15 sat on the driving path in every iteration. The
-interesting ones are the next group (turbine delivery, crane availability,
-erection and array cabling), which drive the finish in about 60% of
-iterations, the rest of the time losing out to the parallel substation path.
-A static schedule review cannot see that.
+date. Of 171 activities, 39 sat on the driving path essentially always. The
+interesting ones are the handful that only become critical when particular
+risks fire. A static schedule review cannot see those.
 
 As a cross-check, I also ran the schedule side through a conventional
 duration-shock model of the kind most practitioners would recognise. It
-returned 115.3 days at P80 against the replay's 99.9. Same neighbourhood, and
-the gap is informative rather than embarrassing: the shortcut leans on
-judgement labels about how much float each risk can use, and the replay
-measures it from the network instead. When an independent, simpler method
-lands in touching distance of the sophisticated one, that is what
-defensibility looks like.
+returned 47 days at P80 against the replay's 53.6. Same neighbourhood, and
+the gap is informative rather than embarrassing: the replay carries full risk
+impacts into a live network and sees the fuller tail. When an independent,
+simpler method lands in touching distance of the sophisticated one, that is
+what defensibility looks like.
 
-## The join, and why the gap is smaller than you'd think
+## The join, and the $450k that was not there
 
 Here is the beat this whole post exists for. You now have a cost P80 of
-$10.97M and a schedule P80 of $3.50M. The obvious move is to add them:
-$14.46M. It is also wrong, and it is wrong in the industry's favourite
+$5.41M and a schedule P80 of $1.88M. The obvious move is to add them:
+$7.29M. It is also wrong, and it is wrong in the industry's favourite
 direction - too conservative to be right, too plausible to get challenged.
 
 A P80 is a percentile, and percentiles do not add. Adding them assumes the
 bad cost year and the bad schedule year always arrive together. Some of
-Tropic Ridge's risks genuinely do hit both at once - fifteen of the
-twenty-nine are dual-coded, and in the simulation those share a single severity draw per
+Tropic Ridge's risks genuinely do hit both at once - ten of the thirty-five
+are dual-coded, and in the simulation those share a single severity draw per
 iteration, so when the turbine delivery risk fires badly, it fires badly on
 both books. But the rest diversify, the way real project years do.
 
@@ -163,43 +160,16 @@ cost and schedule outcome, not before:
 
 | Basis | P80 |
 |---|---|
-| Cost arm | $10.97M |
-| Schedule arm (dollarised) | $3.50M |
-| Naive sum of P80s | $14.46M |
-| Integrated (joint simulation) | $14.34M |
+| Cost arm | $5.41M |
+| Schedule arm (dollarised) | $1.88M |
+| Naive sum of P80s | $7.29M |
+| Integrated (joint simulation) | $6.84M |
 
-The joint figure is $0.12M under the naive sum, about 0.9%. That is small,
-and on this register it should be. Every schedule risk is also a cost risk,
-so the schedule arm is driven by half the register and the two arms move
-largely together. The size of the gap is a property of the register: the
-more of the cost risk that has nothing to do with time, the more the arms
-diversify and the wider the gap. You only find out which case you are in by
-running the joint model, and the joint figure is the defensible one either
-way.
-
-## The owner view: shared drivers
-
-Event risks are not the only thing that moves cost and time together. Poor
-ground slows civil works and costs money; slow erection does the same. Tropic
-Ridge's register carries four shared drivers (civil productivity and ground,
-erection productivity, electrical installation productivity, and grid and
-substation scope), each of which moves time-dependent cost and activity
-durations from one draw.
-
-The headline contingency stays on event risk, at $14.34M. The drivers feed a
-second, owner view of the whole project: total cost P80 of $146.52M on the
-$120M base, which is $26.52M above base because it also carries the base
-estimate's own uncertainty, and a P80 finish of working day 420 against 405
-on event risk alone.
-
-The owner view also gives a joint confidence level, the chance of meeting
-budget and date together: 33% at P80 on each. Rank correlation between total
-cost and finish is 0.44. Event risk on its own correlates strongly with the
-finish; what weakens the link is the base estimate, much of which (turbine
-supply in particular) is priced up front and does not grow with the
-programme. On a labour-heavy project with a long build and spend that tracks
-the S-curve, more of the cost is time-dependent and I would expect a
-noticeably stronger link.
+The joint figure is $0.45M under the naive sum - about 6.6%. On a synthetic
+$50M project that is a rounding-error-sounding number that is also most of a
+million dollars of contingency the naive method would have locked away for
+weather that cannot all happen at once. On the real projects this method
+serves, the gap scales.
 
 ## A photograph, not a film
 
@@ -221,10 +191,10 @@ to the risk that caused it - is the next post.
 
 - 100,000 Monte Carlo iterations per production run (seeded, so
   identically re-runnable, which auditors enjoy more than surprises)
-- 176 scheduled activities, critical path re-solved in every iteration
-- 29 risks, 15 of them hitting cost and schedule together
-- 4 shared drivers linking base cost and durations in the owner view
-- $14.34M P80 contingency on a $120M base, 11.9%
+- 171 scheduled activities, critical path re-solved in every iteration
+- 35 risks, 10 of them hitting cost and schedule together
+- $0.45M: the contingency the naive method books for correlations that
+  do not exist
 - Lines of Python written by me: approximately none (I have a build team
   for that; it happens to be Claude, working under a gated process with
   locked tests - a story for another post)
