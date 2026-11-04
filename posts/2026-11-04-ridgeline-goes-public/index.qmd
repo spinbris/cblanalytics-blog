@@ -1,0 +1,160 @@
+---
+title: "Ridgeline: cost and schedule risk for capital projects, now public"
+description: "A public tool that prices construction risk: how much contingency to hold for the risks on your register, and when you are likely to finish, at the confidence you choose."
+author: "Steve Parton"
+date: "2026-11-04"
+categories: [Risk Analysis, Monte Carlo, QRA, SRA, Source Available, Claude, Vibe Analytics]
+image: ../2026-08-06-tropic-ridge-qra-sra/images/hero.png
+draft: false
+---
+
+
+
+<!-- IMG SLOT: hero - the Tropic Ridge dashboard home page, with its "Full technical report" button -->
+
+*Tropic Ridge Wind Farm is fictional. The method is real.*
+
+Until fairly recently, most capital projects set contingency as a percentage someone was comfortable
+with. Most now quantify risk, but in my experience cost risk is often priced in one spreadsheet and schedule risk in another, and the two are added at the end. However, they are linked, so they should be priced together.
+
+Ridgeline is the engine I built to do this: it tells a project how much contingency to hold for the risks on its register, and when it is likely to finish, at the confidence it chooses. The model is the tool. The analysis is the work, and that is what CBL Analytics offers: running the analysis upfront or month by month, reviewing a register, or training a team in the method and then leaving them to run it, with support when they need it.
+
+The engine is public at [github.com/spinbris/ridgeline](https://github.com/spinbris/ridgeline),
+so you can see how every number is made. It is free to read and evaluate under the Business
+Source License; using it on a real project needs a licence from me. A live example runs at
+[tropicridge.cblanalytics.com](https://tropicridge.cblanalytics.com), the risk dashboard for
+Tropic Ridge, a synthetic 40 MW wind farm.
+
+## A worked example: Tropic Ridge
+
+Tropic Ridge is a $120M wind farm: $111.4M EPC plus an $8.6M grid connection, 29 risks on the
+register and a 176-activity construction schedule. Ridgeline runs it 100,000 times. In each run every risk either
+fires or does not, the schedule is re-solved to see what the delays do to the finish date, and the
+cost and the delay are added up together.
+
+<!-- IMG SLOT: the cost contingency S-curve (outturn docs/showcase/figs/wind_cost_s_curve.png) -->
+
+The answer, at P80 (four chances in five that it is enough):
+
+| | P80 | Share of $120M capex |
+|---|---|---|
+| Cost risk | $10.97M | 9.1% |
+| Schedule risk (99.9 working days of delay, at $35k a day) | $3.50M | 2.9% |
+| Contingency, cost and schedule together | $14.34M | 11.9% |
+
+Adding the cost P80 and the schedule P80 gives $14.46M. As a general rule the P80 of a total is
+lower than the sum of the P80s, because the worst cost outcomes and the worst delays do not all land
+in the same simulated futures. The gap is small here because every schedule risk on Tropic Ridge is
+also a cost risk, so the two move largely together. Ridgeline prices the total directly.
+
+Every number behind that table is in the
+**[full technical report](https://tropicridge.cblanalytics.com/report/)**, one click from the
+dashboard: the distributions, the drivers, the critical path and the cross-checks. The dashboard opens on
+the latest reporting month, so its figures sit a little away from these as risks fire and retire. The engine commit
+the report names is from Ridgeline's private development repository; the public repository carries
+the same engine code.
+
+## What Ridgeline is
+
+Ridgeline does quantitative cost and schedule risk analysis (QRA and SRA) for capital projects. It
+takes three inputs: a risk register in Excel, the project schedule as a Primavera P6 XER file, and
+the base estimate. It gives you the event-risk contingency at P80, with P90 alongside, and the
+completion date at the same confidence. It is not an estimating tool: the base estimate goes in, and
+the contingency for the risks on top of it comes out.
+
+On an engagement it has three kinds of user, all on one engine. The risk owner maintains the Excel
+register, and once I have set it up, an add-in runs the full cost Monte Carlo inside the workbook,
+with no Python on the owner's machine. If all the project needs is a cost QRA and its S-curve, it
+can stop there. If a full QRA/SRA analysis is required, the risk analyst runs the report in Python, which reads the register and the schedule, re-solves the critical path in each of 100,000 iterations, and writes the draft client report. If the project goes ahead, the analyst updates the analysis each month during delivery, and the project team uses the dashboard to track what has fired, what has been retired, where the P80 and the finish date have moved, and what each proposed mitigation would save.
+
+## Ask the dashboard
+
+The dashboard has an Ask box at the foot of every page. Type a question in plain English, such as
+"why is the joint confidence so much lower than 80%?" or "what changed since last month?", and
+Claude answers from that period's published figures and a reader's guide to every field on the
+page. It explains the numbers and does not calculate new ones. Before an answer reaches you,
+software checks every figure and date in it against the published data, and anything it cannot
+match is withheld rather than shown. It will not advise on what contingency to hold, and the report
+remains the source of the certified figures.
+
+## How it works
+
+A risk is one event. In each iteration it fires or it does not. Where a risk has both a cost and a
+schedule impact, as 15 of Tropic Ridge's 29 do, one firing drives both, so the cost and the delay
+arrive together.
+
+Delays are applied to the schedule itself, and the network is re-solved in every iteration. A delay
+smaller than an activity's float costs nothing; a delay on the critical path costs every day. On
+Tropic Ridge every risk lands on a critical activity, so here the result equals adding up the
+delays, and the report says so. On a schedule with float, the re-solve is what separates the delay
+that reaches the finish from the delay that float absorbs.
+
+The contingency is a single distribution of cost plus dollarised delay, and the same engine runs each
+reporting period, so the dashboard shows the forecast moving as risks fire and retire.
+
+## The owner view
+
+Event risk is not the only thing that ties cost to time. Poor ground slows civil works and costs
+money in the same stroke. The register can carry shared drivers for this: each one moves the
+time-dependent cost on its estimate lines and the durations of its activities from a single draw.
+Tropic Ridge has four (civil productivity and ground, erection productivity, electrical
+installation productivity, and grid and substation scope).
+
+The headline contingency stays on event risk. The drivers feed a second, owner view of the whole
+project. On Tropic Ridge, total cost at P80 is $146.52M, $26.52M above the base because it also
+carries the base estimate's own uncertainty, and the P80 finish is working day 420 against 405 on
+event risk alone. The report shows what each driver adds, leave-one-out.
+
+The owner view also gives a joint confidence level, the chance of meeting the budget and the P80
+date together: 33% here. Rank correlation between total cost and finish is 0.44. Event risk on its
+own correlates much more strongly; what weakens the link is the base estimate, much of which
+(turbine supply in particular) is priced up front and does not grow with the programme. On a
+labour-heavy project with a long build and spend that follows the S-curve, I would expect a
+noticeably stronger link.
+
+Three caveats travel with every schedule figure: risk-to-activity mapping is automatic and has not
+been workshop-validated, one project calendar is used, and delay is costed at a day rate, with only
+the shared drivers linking durations to the base estimate.
+
+## Why you can trust the numbers
+
+Two synthetic projects, a wind farm and a highway upgrade, each with its own register and schedule,
+run through the engine, the report and the reference-number gate. Only Tropic Ridge is published to
+the dashboard.
+
+The Excel add-in runs the same cost code as the Python engine, and a test holds the two to identical
+numbers on the same settings. Every headline number (P50, P80, P90 and mean) is locked to reference
+values; one moves only when a method change is approved, and the reason is written down. Those
+reference numbers have also been reproduced from a fresh copy of the code on a second machine, to
+within a few units in the last digit.
+
+The showcase's charts, figures and summary are tied to one recorded run, and the build fails if any of
+them drifts from it. Before anything goes public, a scanner checks every file for client names, paths
+and figures.
+
+## How it was built
+
+With Claude Code, with me as Director, using the four-hats approach from an
+[earlier post](../2026-06-12-four-hats-harder-rails/index.qmd). Claude plans, builds and reviews.
+Every change that moves a number is reviewed by a fresh session and needs my sign-off.
+
+## Working with me
+
+If you have a project with a risk register and a schedule, and a contingency number you are not
+sure you can defend, that is the conversation I want. I can run the analysis for a bid or a
+funding gate with your team, run it monthly through delivery, review a register someone else has built, or
+train your team to run it themselves. [Get in touch](https://www.cblanalytics.com).
+
+If you are a risk practitioner and want to check the method, the code and the full Tropic Ridge
+report are there to read. Questions about how it works are welcome as
+[issues](https://github.com/spinbris/ridgeline/issues).
+
+What's next: test it against a completed project, then use it on the next real bid, round out the monthly cycle, and read schedule formats beyond P6 XER.
+
+*All figures are from a fictional project on synthetic data, shown to illustrate the method, and
+will move as development continues. They are not advice, and no reliance should be placed on them
+for any real project.*
+
+*Ridgeline is the engine behind CBL Analytics' cost and schedule risk work, built with Claude
+Code. The code is source-available under the Business Source License for evaluation; production
+use is by licence. It contains no client data.*
