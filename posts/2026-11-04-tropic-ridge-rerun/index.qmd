@@ -74,4 +74,6 @@ Rank correlation between total cost and finish is 0.44, up from 0.33 on the Augu
 
 Every run is seeded and stamped with its iteration count, input hashes and engine version, so the August figures can still be reproduced from the inputs and engine version they carry, and the November figures from theirs. When the inputs change, the numbers move, and the change has to explain itself. That is the discipline the platform is built around, applied to its own showcase.
 
+*All figures are from a fictional project on synthetic data, shown to illustrate the method. They are not advice, and no reliance should be placed on them for any real project. The platform code is licensed under the Business Source License 1.1 and provided as is, without warranty.*
+
 *Stephen Parton is a chartered accountant and consultant with 30-plus years in finance and risk across banking and infrastructure. SJP Consulting builds quantitative risk tooling under the CBL Analytics banner. [Get in touch on LinkedIn](https://www.linkedin.com/in/stephenparton/).*

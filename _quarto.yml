@@ -23,7 +23,8 @@ website:
   
   page-footer:
     center: |
-      © 2025 [SJP Consulting](https://sjpconsulting.com). All rights reserved.
+      © 2025-2026 [SJP Consulting](https://sjpconsulting.com). All rights reserved.<br>
+      General information only, not financial, engineering or other professional advice. Examples use synthetic data. Provided as is, with no warranty of any kind, and no liability is accepted to the extent permitted by law.
     background: "#0f172a"
 
 format:
