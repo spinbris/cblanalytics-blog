@@ -49,7 +49,8 @@ also a cost risk, so the two move largely together. Ridgeline prices the total d
 
 Every number behind that table is in the
 **[full technical report](https://tropicridge.cblanalytics.com/report/)**, one click from the
-dashboard: the distributions, the drivers, the critical path and the cross-checks. The engine commit
+dashboard: the distributions, the drivers, the critical path and the cross-checks. The dashboard opens on
+the latest reporting month, so its figures sit a little away from these as risks fire and retire. The engine commit
 the report names is from Ridgeline's private development repository; the public repository carries
 the same engine code.
 
