@@ -66,6 +66,16 @@ register, and once I have set it up, an add-in runs the full cost Monte Carlo in
 with no Python on the owner's machine. If all the project needs is a cost QRA and its S-curve, it
 can stop there. If a full QRA/SRA analysis is required, the risk analyst runs the report in Python, which reads the register and the schedule, re-solves the critical path in each of 100,000 iterations, and writes the draft client report. If the project goes ahead, the analyst updates the analysis each month during delivery, and the project team uses the dashboard to track what has fired, what has been retired, where the P80 and the finish date have moved, and what each proposed mitigation would save.
 
+## Ask the dashboard
+
+The dashboard has an Ask box at the foot of every page. Type a question in plain English, such as
+"why is the joint confidence so much lower than 80%?" or "what changed since last month?", and
+Claude answers from that period's published figures and a reader's guide to every field on the
+page. It explains the numbers and does not calculate new ones. Before an answer reaches you,
+software checks every figure and date in it against the published data, and anything it cannot
+match is withheld rather than shown. It will not advise on what contingency to hold, and the report
+remains the source of the certified figures.
+
 ## How it works
 
 A risk is one event. In each iteration it fires or it does not. Where a risk has both a cost and a
