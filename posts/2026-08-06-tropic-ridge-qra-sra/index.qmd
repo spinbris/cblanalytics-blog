@@ -13,7 +13,7 @@ draft: false
 *Tropic Ridge Wind Farm is a fictional project (which I also use for demonstrating new DCF modelling techniques). While this model is purely for demonstration purposes, the methodology is real and is the same one I ran on
 a live infrastructure engagement.*
 
-*Update, November 2026: the figures in this post are the August baseline. Tropic Ridge has since been rescaled to a realistic 40 MW, $120M project and the model extended with shared risk drivers. What changed, and why the headline gap shrank, is in [Tropic Ridge, re-run](../2026-11-04-tropic-ridge-rerun/index.qmd).*
+*Update, November 2026: the figures in this post were the August development run and are illustrative. Tropic Ridge has since been rescaled to a 40 MW, $120M project; current figures are in the [live report](https://tropicridge.cblanalytics.com/report/).*
 
 ## What we Built
 
