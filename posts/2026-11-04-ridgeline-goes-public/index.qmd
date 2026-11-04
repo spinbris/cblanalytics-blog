@@ -5,7 +5,7 @@ author: "Steve Parton"
 date: "2026-11-04"
 categories: [Risk Analysis, Monte Carlo, QRA, SRA, Source Available, Claude, Vibe Analytics]
 image: ../2026-08-06-tropic-ridge-qra-sra/images/hero.png
-draft: true
+draft: false
 ---
 
 
