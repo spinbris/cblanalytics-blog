@@ -6,6 +6,7 @@ website:
   title: "CBL Analytics Blog"
   description: "Data science, AI development, and financial analytics insights"
   site-url: https://blog.cblanalytics.com
+  google-analytics: "G-TH2XZ1593T"
   
   navbar:
     background: "#0f172a"
