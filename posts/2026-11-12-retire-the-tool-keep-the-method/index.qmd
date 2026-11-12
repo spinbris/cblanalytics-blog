@@ -9,21 +9,14 @@ draft: true
 
 <!-- DRAFT for Steve. Built from the filings-research blog journal (docs/blog-journal.md). Figures checked against the published Apple report of 12/11/2026. Slots marked [STEVE: ...] need your own words or facts. -->
 
-Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
+Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
 
-The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing.
+The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left.The far better approach would be to build in the new reality using the new tools and methodologies, which is what i have really always done anyway.
 
-## The bug that made the case
-
-Before retiring the app I spot-checked its saved Apple DCF against the SEC data. The income lines were right. Current assets, current liabilities and tax had come from the prior year, and equity from the wrong line altogether. The tax rate went in at 22.4% when it should have been 15.6%.
-
-The cause was a design flaw, not a typo. The cache stored values without a period date, then took whichever year's figure was larger. Any company whose balances shrank would have been hit. The app also had an AI verifier agent, and it did not catch it. A verifier that is itself a model is not a control on numbers.
-
-The part I like: in the months the app sat untouched, the SEC data library it used had fixed this by design. It now tags every fact with its period end and filing, and picks by period, not size. That is the case for continual upgrading in one line. [STEVE: optional sentence on how you found the errors, or on what it felt like to see them.]
 
 ## Where the AI sits now
 
-Both versions put AI inside a model whose numbers have to be deterministic. What changed is where the AI sits and what stops it.
+Both versions mainly used AI to build the app, with an some additional AI help within the app to synthesise reports. The numbers must be deterministic so Python code to access SEC using the now much advanced Edgar tool looks after the quantitative side. 
 
 | | Original app (2025 to 2026) | Rebuild (November 2026) |
 |---|---|---|
@@ -32,9 +25,9 @@ Both versions put AI inside a model whose numbers have to be deterministic. What
 | Who makes the numbers | Code, through a cache with no period date | Scripts only. Every figure in the prose is a token a script fills |
 | What guards them | An AI verifier and fixed rules | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
 
-The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day.
+The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is however simplified to the extent that I just run the analyses, rather than allowing others access.
 
-[STEVE: the model and tooling progression in your own words. From the journal: Opus 4.5 in January, 4.6 in February, the financial services skills in late February, Fable 5 and Opus 4.8 in June, Opus 5.5 with Sonnet for the build in November. What could you trust the newer generation with that you could not before?]
+The Claude models and tooling I used have changed dramtically starting from Sonnet 4.5 then moving to Opus 4.1, then Opus 4.5 in January, 4.6 in February, the financial services skills in late February, Fable 5 and Opus 4.8 in June, Opus 5.5 with Sonnet for the build in November. Opus 5.5 is my main daily model at the moment. But I did get Fable 5.2 to do a critical review the other day. And the way the models work has greatly sped up my workflow with the agentic coding approach that comes pretty much as a given and the much improved/expanded Claude skills and tooling available, as well as the improved Claude desktop app. I did do quite a lot of work directly from the the terminal but now mostly use a mix of Claude Code desktop, VS Code, and a bit of bash. Thats all on my xps, although on other projects I have been using my mini mac a lot with the two chatting to each other by synced Obsidian etc. Compared to the clunky old days of early 2026, things are positively stramlined
 
 ## The line between model and script
 
