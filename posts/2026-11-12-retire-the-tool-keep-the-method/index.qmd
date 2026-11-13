@@ -27,7 +27,7 @@ In both the old and new versions AI did the build, and inside the app it synthes
 | Who makes the numbers | Python code on the SEC data, through edgartools | Python and edgartools (pinned). Every figure in the prose is a token a script fills |
 | What guards them | Fixed rules and a verifier agent | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
 
-The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool (although this is still just a demo project)
+The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool (although this is still just a demo project).
 
 The Claude models and tooling I build with have changed dramatically over the year. The first version was built on Sonnet 4.5, with Opus 4.1 as the heavier option, then Opus 4.5 from late November 2025 and 4.6 from February, when the financial services skills also arrived. Fable 5 and Opus 4.8 followed in June, and this rebuild used Opus 5.5 for design and review with Sonnet for the build. Opus 5.5 is my main daily model at the moment.
 
@@ -42,11 +42,11 @@ On the first real run it caught four slips in the prose for the Apple pack, all 
 
 ## An independent review, and a test set the builder never saw
 
-A second Claude session reviewed the rebuild cold, as a model validator would. I used Fable 5.2 for this (mainly because it had been released the day before so had to give it a try). It is the most advanced model I have used so far. The numbers held exactly: Apple re-ran from its archived inputs to the cent, the workbook matched the engine, and 15 of 15 figures tied to the 10-K.
+A second Claude session reviewed the rebuild cold, as a model validator would. I used Fable 5.2 for this (mainly because it had only just been released, so I had to give it a try). It is the most advanced model I have used so far. The numbers held exactly: Apple re-ran from its archived inputs to the cent, the workbook matched the engine, and 15 of 15 figures tied to the 10-K.
 
 The gaps were in the controls around the numbers. The prose checker could not yet tell a correct sentence from a wrong one built from correct figures. I tagged that version as a baseline, scored it on 17 rows, and every fix since has been measured against it.
 
-So Fable 5.2 impoved the analysis methodology in a few different ways from one quick creitical review, and I am sure this pattern will repeat.  The method may be the same, but the tooling keeps moving to improve final output. The next version might perhaps include more of the original app functionality and broader access and subject matter, unless Claude beats me to it (probably alreay has)
+So Fable 5.2 improved the analysis methodology in a few different ways from one quick critical review, and I am sure this pattern will repeat. The method may be the same, but the tooling keeps moving to improve final output. The next version might perhaps include more of the original app functionality and broader access and subject matter, unless Claude beats me to it (it probably already has).
 
 
 ## How I manage the next upgrade
@@ -59,8 +59,8 @@ Finance already has a language for this. Model risk management (the US Fed's SR 
 4. Switch: one change at a time, each with its own gate.
 5. Record: a library or model upgrade is a methodology change, logged like one.
 
-I might just schedule a claude review every month or so to recommend improvements based on newer tech etc... probably does not need me to be involved at all (human leaving loop, but with guardrails). This is a very replicable and scalable approach, I would have thought. I have a nuyumber of these sorts of projects now, so scalability is a nice thing to have.
+I might schedule a Claude review every month or so to recommend improvements based on newer tech. The review can run on its own; I just sign off on the recommendations. The human is stepping back, though not yet out of the loop, and with guardrails. This is a very replicable and scalable approach, I would have thought. I have a number of these sorts of projects now, so scalability is a nice thing to have.
 
-The published Apple report is on the [Corporate Research page (https://cblanalytics.com/projects/corporate-research), and I will add more (it is really just the press of a button and NVidia probably needs another look)
+The published Apple report is on the [Corporate Research page](https://cblanalytics.com/projects/corporate-research), and I will add more. Each new report is a short run plus my sign-off, and Nvidia is next on the list.
 
 *Research assistance only, not investment advice.*
