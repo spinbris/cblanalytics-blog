@@ -5,7 +5,7 @@ author: "Steve Parton"
 date: "2026-11-12"
 categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Analytics]
 image: images/hero.png
-draft: true
+draft: false
 ---
 
 Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
