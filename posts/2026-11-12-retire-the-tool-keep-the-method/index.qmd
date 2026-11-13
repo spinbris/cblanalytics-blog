@@ -19,10 +19,13 @@ In both versions AI did the build, and inside the app it synthesises the report,
 
 | | Original app (2025 to 2026) | Rebuild (November 2026) |
 |---|---|---|
-| Shape | Hosted app, about 95,000 lines | A small Python core plus a Claude skill, about 5,100 lines and 391 tests |
-| AI's job | Agents that searched the filings, drafted and checked the report | One session that reads the filings, writes named prose slots and proposes assumption changes |
-| Who makes the numbers | Python code on the SEC data | Scripts only. Every figure in the prose is a token a script fills |
-| What guards them | Fixed rules and an AI checker | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
+| Shape | Hosted web app, about 95,000 lines of Python | A small Python core plus a Claude skill, about 5,100 lines and 391 tests |
+| AI framework | OpenAI Agents SDK | Claude Code with a skill, no agent framework |
+| AI's job | Ten specialist agents: planner, search, EDGAR, metrics, financials, risk (three versions), writer, verifier, banking ratios and knowledge-base query | One Claude session that reads the filings and risk factors, writes named prose slots and proposes assumption changes |
+| Models | o3-mini, GPT-4o, GPT-4.1 and GPT-5, chosen agent by agent | Claude: Opus 5.5 for design and review, Sonnet for the build |
+| Supporting machinery | Five-tier cache, vector database, hosted user interface | None. GitHub workflows build and publish each report |
+| Who makes the numbers | Python code on the SEC data, through edgartools | Python and edgartools (pinned). Every figure in the prose is a token a script fills |
+| What guards them | Fixed rules and a verifier agent | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
 
 The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool.
 
