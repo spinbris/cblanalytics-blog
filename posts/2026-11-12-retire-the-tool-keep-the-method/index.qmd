@@ -1,6 +1,6 @@
 ---
 title: "Retire the tool, keep the method"
-description: "I shut down my SEC research app and rebuilt the method on current tools in a day. Then an independent review, a held-out test set and a wider Monte Carlo range. Notes on keeping a model current as the AI moves on."
+description: "I built an SEC research app last year over 3-4 months. Last week I shut it down and replaced it using current technology in a day. I think this pattern will continue to repeat. Notes on keeping a model current as the AI moves on."
 author: "Steve Parton"
 date: "2026-11-12"
 categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Analytics]
@@ -11,11 +11,11 @@ draft: true
 
 Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
 
-The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left. The far better approach is to rebuild in the new reality with the new tools and methods, which is what I have really always done anyway.
+The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left! The far better approach is to rebuild in the new enhanced reality with the new tools and methods to produce a better outcome, which is what I have really always done anyway.
 
 ## Where the AI sits now
 
-In both versions AI did the build, and inside the app it synthesises the report, which it is very good at. It is kept away from the numbers. Every figure comes from Python code reading the SEC filings through the edgartools library, which has moved on a long way since the first version, so the numbers are fully deterministic.
+In both the old and new versions AI did the build, and inside the app it synthesised the reports, which it is very good at. It is kept away from the numbers. Every figure comes from Python code reading the SEC filings through the edgartools library, which has moved on a long way since the first version, so the numbers are fully deterministic.
 
 | | Original app (2025 to 2026) | Rebuild (November 2026) |
 |---|---|---|
@@ -27,13 +27,12 @@ In both versions AI did the build, and inside the app it synthesises the report,
 | Who makes the numbers | Python code on the SEC data, through edgartools | Python and edgartools (pinned). Every figure in the prose is a token a script fills |
 | What guards them | Fixed rules and a verifier agent | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
 
-The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool.
+The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool (although this is still just a demo project)
 
-The Claude models and tooling I build with have changed dramatically over the same period. The first version was built on Sonnet 4.5, with Opus 4.1 as the heavier option, then Opus 4.5 from late November 2025 and 4.6 from February, when the financial services skills also arrived. Fable 5 and Opus 4.8 followed in June, and this rebuild used Opus 5.5 for design and review with Sonnet for the build. Opus 5.5 is my main daily model at the moment.
+The Claude models and tooling I build with have changed dramatically over the year. The first version was built on Sonnet 4.5, with Opus 4.1 as the heavier option, then Opus 4.5 from late November 2025 and 4.6 from February, when the financial services skills also arrived. Fable 5 and Opus 4.8 followed in June, and this rebuild used Opus 5.5 for design and review with Sonnet for the build. Opus 5.5 is my main daily model at the moment.
 
-The way I work has changed as much as the models. Agentic coding is now pretty much a given, the Claude skills and tooling have expanded a lot, and the desktop app is much improved. I used to do a lot of work straight from the terminal; now it is mostly Claude Code desktop and VS Code, with a bit of bash. This project ran on my XPS, while on other projects my Mac mini does a lot of the work, with the two machines keeping in step through a synced Obsidian vault. Compared with the clunky old days of early 2026, things are positively streamlined.
+The way I work has changed as much as the models. Agentic coding is now pretty much a given, the Claude skills and tooling have expanded a lot, and the Claude desktop app is much improved. I used to do a lot of work straight from the terminal; now it is mostly Claude Code desktop and VS Code, with a bit of bash. This project ran on my XPS, while on other projects my Mac Mini does a lot of the work, with the two machines keeping in step through a synced Obsidian vault. Compared with the clunky old days of early 2026, things are positively streamlined. The thing is, I am pretty sure I will be making the same comment in another 6 months comparing then to now - crazy times indeed.
 
-[STEVE: check the model dates against Anthropic's release notes before publishing.]
 
 ## The line between model and script
 
@@ -43,31 +42,12 @@ On the first real run it caught four slips in the prose for the Apple pack, all 
 
 ## An independent review, and a test set the builder never saw
 
-A second Claude session reviewed the rebuild cold, as a model validator would. I used Fable 5.2 for this, which had come out only a few days earlier and is the most advanced model I have used so far. The numbers held exactly: Apple re-ran from its archived inputs to the cent, the workbook matched the engine, and 15 of 15 figures tied to the 10-K.
+A second Claude session reviewed the rebuild cold, as a model validator would. I used Fable 5.2 for this (mainly because it had been released the day before so had to give it a try). It is the most advanced model I have used so far. The numbers held exactly: Apple re-ran from its archived inputs to the cent, the workbook matched the engine, and 15 of 15 figures tied to the 10-K.
 
 The gaps were in the controls around the numbers. The prose checker could not yet tell a correct sentence from a wrong one built from correct figures. I tagged that version as a baseline, scored it on 17 rows, and every fix since has been measured against it.
 
-The lesson I keep coming back to came next. The first fix blocked all 10 wrong sentences from the review. The reviewer then wrote 23 new ones of the same kinds and 18 got through. The checker had learned the test. So the gate became a held-out set: fresh wrong sentences written at each review and never shared with the builder, with correct sentences alongside so the check cannot pass by refusing everything. The rebuilt checker blocked 30 of 30. Anyone who has held out data when fitting a model will recognise the idea.
+So Fable 5.2 impoved the analysis methodology in a few different ways from one quick creitical review, and I am sure this pattern will repeat.  The method may be the same, but the tooling keeps moving to improve final output. The next version might perhaps include more of the original app functionality and broader access and subject matter, unless Claude beats me to it (probably alreay has)
 
-## The range gets wider, and now it says why
-
-The review also found that the Monte Carlo range rested on three spreads that were code defaults, never approved assumptions. They now come from Apple's own filings: the cash-flow spread from how much free-cash-flow margin moved over four years, and a new revenue-growth spread from how much growth moved.
-
-```{=html}
-<table>
-<thead><tr><th>Apple FY2026, value per share</th><th>P10</th><th>P50</th><th>P90</th></tr></thead>
-<tbody>
-<tr><td>9 November (fixed spreads)</td><td>$164.15</td><td>$198.94</td><td>$254.66</td></tr>
-<tr><td>12 November (spreads from Apple's history)</td><td>$149.38</td><td>$199.50</td><td>$274.64</td></tr>
-</tbody>
-</table>
-```
-
-The base value does not move, $198.53. I saw both ranges side by side before approving, and the old setting still reproduces the baseline exactly, so the change can be shown rather than described. A wider range is not a worse model. The old one was narrow because nobody had asked where its spreads came from. The growth spread rests on three years of data, one of them the growth-case year, so it stays flagged.
-
-## Knowing when to stop
-
-Sign-off went through three rounds of forgery testing before the record held: it now has to match the copy GitHub keeps inside the run that produced it, with every file hashed. The reviewer's next idea was a passphrase, then one-time codes. I stopped it there. This is a low-risk research tool, and a control should cost less than the loss it prevents. The limit is written down instead: the record names a GitHub account, not a person.
 
 ## How I manage the next upgrade
 
@@ -79,8 +59,8 @@ Finance already has a language for this. Model risk management (the US Fed's SR 
 4. Switch: one change at a time, each with its own gate.
 5. Record: a library or model upgrade is a methodology change, logged like one.
 
-[STEVE: closing thought. Possibly: the rebuild cost about a week of elapsed time with Claude doing the build and a second Claude reviewing; what that says about how often a method like this should be revisited.]
+I might just schedule a claude review every month or so to recommend improvements based on newer tech etc... probably does not need me to be involved at all (human leaving loop, but with guardrails). This is a very replicable and scalable approach, I would have thought. I have a nuyumber of these sorts of projects now, so scalability is a nice thing to have.
 
-The published Apple report is on the [Corporate Research page](https://cblanalytics.com/projects/corporate-research), with the 9 November version linked beside it.
+The published Apple report is on the [Corporate Research page (https://cblanalytics.com/projects/corporate-research), and I will add more (it is really just the press of a button and NVidia probably needs another look)
 
 *Research assistance only, not investment advice.*
