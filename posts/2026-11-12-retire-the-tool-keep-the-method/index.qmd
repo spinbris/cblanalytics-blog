@@ -7,8 +7,6 @@ categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Ana
 draft: true
 ---
 
-<!-- DRAFT. Figures checked against the published Apple report of 12/11/2026. Remove this line and the [STEVE] notes before publishing. -->
-
 Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
 
 The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left! The far better approach is to rebuild in the new enhanced reality with the new tools and methods to produce a better outcome, which is what I have really always done anyway.
