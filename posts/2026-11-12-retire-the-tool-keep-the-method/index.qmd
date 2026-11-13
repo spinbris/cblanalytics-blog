@@ -4,6 +4,7 @@ description: "I built an SEC research app last year over 3-4 months. Last week I
 author: "Steve Parton"
 date: "2026-11-12"
 categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Analytics]
+image: images/hero.png
 draft: true
 ---
 
