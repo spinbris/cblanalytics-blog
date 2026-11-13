@@ -1,0 +1,65 @@
+---
+title: "Retire the tool, keep the method"
+description: "I built an SEC research app last year over 3-4 months. Last week I shut it down and replaced it using current technology in a day. I think this pattern will continue to repeat. Notes on keeping a model current as the AI moves on."
+author: "Steve Parton"
+date: "2026-11-12"
+categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Analytics]
+image: images/hero.png
+draft: false
+---
+
+Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
+
+The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left! The far better approach is to rebuild in the new enhanced reality with the new tools and methods to produce a better outcome, which is what I have really always done anyway.
+
+## Where the AI sits now
+
+In both the old and new versions AI did the build, and inside the app it synthesised the reports, which it is very good at. It is kept away from the numbers. Every figure comes from Python code reading the SEC filings through the edgartools library, which has moved on a long way since the first version, so the numbers are fully deterministic.
+
+| | Original app (2025 to 2026) | Rebuild (November 2026) |
+|---|---|---|
+| Shape | Hosted web app, about 95,000 lines of Python | A small Python core plus a Claude skill, about 5,100 lines and 391 tests |
+| AI framework | OpenAI Agents SDK | Claude Code with a skill, no agent framework |
+| AI's job | Ten specialist agents: planner, search, EDGAR, metrics, financials, risk (three versions), writer, verifier, banking ratios and knowledge-base query | One Claude session that reads the filings and risk factors, writes named prose slots and proposes assumption changes |
+| Models | o3-mini, GPT-4o, GPT-4.1 and GPT-5, chosen agent by agent | Claude: Opus 5.5 for design and review, Sonnet for the build |
+| Supporting machinery | Five-tier cache, vector database, hosted user interface | None. GitHub workflows build and publish each report |
+| Who makes the numbers | Python code on the SEC data, through edgartools 4.34 | Python and edgartools 5.62, a much more capable version. Every figure in the prose is a placeholder a script fills |
+| What guards them | Fixed rules and a verifier agent | Tie-outs that stop the run, a checker that refuses any typed number, my sign-off |
+
+The application layer (hosting, user interface, agent plumbing, cache, vector database) went. The method stayed: the data contract, the tie-outs, the seeded Monte Carlo. The core went from first commit to a checked Apple pack in a day. It is also simpler in one deliberate way: I run the analyses myself rather than offering the tool to others. I sell the work, not the tool (although this is still just a demo project).
+
+The Claude models and tooling I build with have changed dramatically over the year. The first version was built on Sonnet 4.5, with Opus 4.1 as the heavier option, then Opus 4.5 from late November 2025 and 4.6 from February, when the financial services skills also arrived. Fable 5 and Opus 4.8 followed in June, and this rebuild used Opus 5.5 for design and review with Sonnet for the build. Opus 5.5 is my main daily model at the moment.
+
+The way I work has changed as much as the models. Agentic coding is now pretty much a given, the Claude skills and tooling have expanded a lot, and the Claude desktop app is much improved. I used to do a lot of work straight from the terminal; now it is mostly Claude Code desktop and VS Code, with a bit of bash. This project ran on my XPS, while on other projects my Mac Mini does a lot of the work, with the two machines keeping in step through a synced Obsidian vault. Compared with the clunky old days of early 2026, things are positively streamlined. The thing is, I am pretty sure I will be making the same comment in another 6 months comparing then to now - crazy times indeed.
+
+
+## The line between model and script
+
+Claude reads the 10-K and writes. It cannot type a number. Every figure in the report is a token like `{{rev_fy2026}}` that a script fills from a file tied by hash to the run. A checker refuses the report if it finds a bare number, a figure next to the wrong name or year, a web claim without a source and date, or buy and sell language. The renderer will not run until the checker passes.
+
+On the first real run it caught four slips in the prose for the Apple pack, all things a human editor would have let through. The rule it forced is stricter than it sounds: a figure that is in an SEC filing but not in the checked data (the quarterly result in an 8-K, say) still cannot be typed. It goes in a sentence labelled as web context, with its source.
+
+## An independent review, and a test set the builder never saw
+
+A second Claude session reviewed the rebuild cold, as a model validator would. I used Fable 5.2 for this (mainly because it had only just been released, so I had to give it a try). It is the most advanced model I have used so far. The numbers held exactly: Apple re-ran from its archived inputs to the cent, the workbook matched the engine, and 15 of 15 figures tied to the 10-K.
+
+The gaps were in the controls around the numbers. The prose checker could not yet tell a correct sentence from a wrong one built from correct figures. I tagged that version as a baseline, scored it on 17 rows, and every fix since has been measured against it.
+
+So Fable 5.2 improved the analysis methodology in a few different ways from one quick critical review, and I am sure this pattern will repeat. The method may be the same, but the tooling keeps moving to improve final output. The next version might perhaps include more of the original app functionality and broader access and subject matter, unless Claude beats me to it (it probably already has).
+
+
+## How I manage the next upgrade
+
+Finance already has a language for this. Model risk management (the US Fed's SR 11-7 and its cousins) asks for change control, independent validation and versioning. Engineering has the strangler fig: replace an old system piece by piece behind a stable interface. My working version is short:
+
+1. Scan: what has moved in the models, libraries and tools since the method was last built.
+2. Assess: for each step of the old pipeline, keep, replace or drop.
+3. Prove: same or better on golden fixtures, against a tagged baseline, with a held-out test set.
+4. Switch: one change at a time, each with its own gate.
+5. Record: a library or model upgrade is a methodology change, logged like one.
+
+I might schedule a Claude review every month or so to recommend improvements based on newer tech. The review can run on its own; I just sign off on the recommendations. The human is stepping back, though not yet out of the loop, and with guardrails. This is a very replicable and scalable approach, I would have thought. I have a number of these sorts of projects now, so scalability is a nice thing to have.
+
+The published Apple report is on the [Corporate Research page](https://cblanalytics.com/projects/corporate-research), and I will add more. Each new report is a short run plus my sign-off, and Nvidia is next on the list.
+
+*Research assistance only, not investment advice.*
