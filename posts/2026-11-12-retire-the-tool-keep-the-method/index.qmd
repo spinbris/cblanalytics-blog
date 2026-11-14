@@ -1,6 +1,6 @@
 ---
 title: "Retire the tool, keep the method"
-description: "I built an SEC research app last year over 3-4 months. Last week I shut it down and replaced it using current technology in a day. I think this pattern will continue to repeat. Notes on keeping a model current as the AI moves on."
+description: "I built an SEC research app last year over 3-4 months. Last week I shut it down and rebuilt it on current technology in a day. I think this pattern will keep repeating."
 author: "Steve Parton"
 date: "2026-11-12"
 categories: [Financial Modelling, DCF, Monte Carlo, Model Risk, Claude, Vibe Analytics]
@@ -8,13 +8,13 @@ image: images/hero.png
 draft: false
 ---
 
-Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
+Late in 2025 I built an app that turned SEC filings into research reports: financial statements, ratios, a risk read of the 10-K and a Monte Carlo DCF. It took about four months in elapsed time, ran to roughly 95,000 lines of (Claude generated) Python, and then ran live for most of a year with no further development. On 8 November 2026 I shut it down.
 
-The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The question is not whether to keep an old tool. It is whether the method still gives the same or better answers on today's technology. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left! The far better approach is to rebuild in the new enhanced reality with the new tools and methods to produce a better outcome, which is what I have really always done anyway.
+The first instinct was to archive it and move on. Claude could now do most of what the app did, so why keep it? Overnight I changed my mind. The real question is whether the method still gives the same or better answers to my questions. If it does, rebuild it. Archiving throws the method away with the plumbing. The other thought was that if I threw out an analysis every time AI replicated all or part of one of my analyses, I would have little left! The far better approach is to rebuild in the new enhanced reality with the new tools and methods to produce a better outcome, which is what I have really always done anyway. I also rescaled it from a generic research app for all comers to a personal research app, just for me to run. And it must be noted it is an input not a final output until the human-in-the-loop reviews. I am now thinking that all of my analyses will turn into Claude skills, code being in the skill itself rather than in a codebase, but that a subject for a future blog. 
 
 ## Where the AI sits now
 
-In both the old and new versions AI did the build, and inside the app it synthesised the reports, which it is very good at. It is kept away from the numbers. Every figure comes from Python code reading the SEC filings through the edgartools library, which has moved on a long way since the first version, so the numbers are fully deterministic.
+In both the old and new versions AI did the build, and inside the app AI synthesised the reports, which it is very good at. It is kept away from the numbers. Every figure comes from Python code reading the SEC filings through the edgartools library, which has moved on a long way since the version I used for the original app, so the numbers are fully deterministic.
 
 | | Original app (2025 to 2026) | Rebuild (November 2026) |
 |---|---|---|
@@ -48,18 +48,8 @@ The gaps were in the controls around the numbers. The prose checker could not ye
 So Fable 5.2 improved the analysis methodology in a few different ways from one quick critical review, and I am sure this pattern will repeat. The method may be the same, but the tooling keeps moving to improve final output. The next version might perhaps include more of the original app functionality and broader access and subject matter, unless Claude beats me to it (it probably already has).
 
 
-## How I manage the next upgrade
+The next step is, as mentioned, to package the whole thing as one self-contained Claude skill, with the Python code bundled inside it, using this app as the prototype. Claude still runs the code rather than doing the sums, so every number stays deterministic and testable. Now that a working prototype exists, I expect that to be a small job, not another rebuild, but that is for the next blog. My sign-off stays in the loop, and the guardrails come with it. This is a very replicable and scalable approach, I would have thought. I have a number of these sorts of projects now, so scalability is a nice thing to have.
 
-Finance already has a language for this. Model risk management (the US Fed's SR 11-7 and its cousins) asks for change control, independent validation and versioning. Engineering has the strangler fig: replace an old system piece by piece behind a stable interface. My working version is short:
-
-1. Scan: what has moved in the models, libraries and tools since the method was last built.
-2. Assess: for each step of the old pipeline, keep, replace or drop.
-3. Prove: same or better on golden fixtures, against a tagged baseline, with a held-out test set.
-4. Switch: one change at a time, each with its own gate.
-5. Record: a library or model upgrade is a methodology change, logged like one.
-
-I might schedule a Claude review every month or so to recommend improvements based on newer tech. The review can run on its own; I just sign off on the recommendations. The human is stepping back, though not yet out of the loop, and with guardrails. This is a very replicable and scalable approach, I would have thought. I have a number of these sorts of projects now, so scalability is a nice thing to have.
-
-The published Apple report is on the [Corporate Research page](https://cblanalytics.com/projects/corporate-research), and I will add more. Each new report is a short run plus my sign-off, and Nvidia is next on the list.
+The published Apple report is on the [Corporate Research page](https://cblanalytics.com/projects/corporate-research), together with an interim Nvidia report priced ahead of its third-quarter result. I will add more, as each new report is just a short run plus my sign-off.
 
 *Research assistance only, not investment advice.*
